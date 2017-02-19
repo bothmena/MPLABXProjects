@@ -1,0 +1,64 @@
+[p LITE_MODE AUTOSTATIC PIC14 PICREGULAR PICMID ]
+[d version 1.1 ]
+[d edition pro ]
+[d chip 16F84A ]
+[d frameptr 6 ]
+"6 C:\Program Files\Microchip\xc8\v1.40\sources\common\awmod.c
+[v ___awmod __awmod `(i  1 e 2 0 ]
+"62 C:\Program Files\Microchip\xc8\v1.40\sources\common\float.c
+[v ___ftpack __ftpack `(f  1 e 3 0 ]
+"86 C:\Program Files\Microchip\xc8\v1.40\sources\common\ftadd.c
+[v ___ftadd __ftadd `(f  1 e 3 0 ]
+"6 C:\Program Files\Microchip\xc8\v1.40\sources\pic\eeprom.c
+[v _eecpymem eecpymem `(v  1 e 1 0 ]
+"39
+[v _memcpyee memcpyee `(v  1 e 1 0 ]
+"14 C:\Users\Aymen\MPLABXProjects\DeElectroniqueC.X\main.c
+[v _main main `(v  1 e 1 0 ]
+"34
+[v _show show `(v  1 e 1 0 ]
+"62
+[v _attente attente `(v  1 e 1 0 ]
+"158 C:\Program Files\Microchip\xc8\v1.40\include\pic16f84a.h
+[v _PORTA PORTA `VEuc  1 e 1 @5 ]
+"201
+[v _PORTB PORTB `VEuc  1 e 1 @6 ]
+"439
+[v _TRISA TRISA `VEuc  1 e 1 @133 ]
+"482
+[v _TRISB TRISB `VEuc  1 e 1 @134 ]
+"624
+[v _RA0 RA0 `VEb  1 e 0 @40 ]
+"14 C:\Users\Aymen\MPLABXProjects\DeElectroniqueC.X\main.c
+[v _main main `(v  1 e 1 0 ]
+{
+"22
+[v main@i i `i  1 a 2 7 ]
+"32
+} 0
+"34
+[v _show show `(v  1 e 1 0 ]
+{
+[v show@i i `i  1 p 2 4 ]
+"60
+} 0
+"62
+[v _attente attente `(v  1 e 1 0 ]
+{
+"65
+[v attente@j j `i  1 a 2 2 ]
+"64
+[v attente@i i `i  1 a 2 0 ]
+"67
+} 0
+"6 C:\Program Files\Microchip\xc8\v1.40\sources\common\awmod.c
+[v ___awmod __awmod `(i  1 e 2 0 ]
+{
+"11
+[v ___awmod@sign sign `uc  1 a 1 6 ]
+[v ___awmod@counter counter `uc  1 a 1 5 ]
+"6
+[v ___awmod@divisor divisor `i  1 p 2 0 ]
+[v ___awmod@dividend dividend `i  1 p 2 2 ]
+"35
+} 0

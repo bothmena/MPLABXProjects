@@ -1,0 +1,38 @@
+MPLINK 5.08, LINKER
+Linker Map File - Created Mon Jan 23 11:49:56 2017
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000002
+                   .cinit    romdata   0x000001    program   0x000004
+                   .org_1       code   0x000005    program   0x000016
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000002      
+                            0x000005    0x00000f      
+            14 out of 1094 program addresses used, program memory utilization is 1%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                   BOUCLE   0x00000a    program     static C:\Users\Aymen\MPLABXProjects\secondASM.X\main.asm
+                   LEDOFF   0x00000e    program     static C:\Users\Aymen\MPLABXProjects\secondASM.X\main.asm
+                    START   0x000005    program     static C:\Users\Aymen\MPLABXProjects\secondASM.X\main.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                    START   0x000005    program     static C:\Users\Aymen\MPLABXProjects\secondASM.X\main.asm
+                   BOUCLE   0x00000a    program     static C:\Users\Aymen\MPLABXProjects\secondASM.X\main.asm
+                   LEDOFF   0x00000e    program     static C:\Users\Aymen\MPLABXProjects\secondASM.X\main.asm
+
+

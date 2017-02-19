@@ -1,0 +1,36 @@
+
+    #include p16f84.inc
+    
+    #DEFINE LED PORTB,0
+    #DEFINE BOUTON PORTB,1
+    
+BANK0 MACRO
+    BCF STATUS,RP0
+    ENDM
+    
+BANK1 MACRO
+    BSF STATUS,RP0
+    ENDM
+    
+    ORG 0x00
+    GOTO START
+    
+START ORG 0x05
+    BANK1
+    MOVLW 0xFE
+    MOVWF TRISB
+    BANK0
+    BCF PORTB,0
+    
+
+BOUCLE
+    BTFSS BOUTON
+    GOTO LEDOFF
+    BSF LED
+    GOTO BOUCLE
+    
+LEDOFF
+    BCF LED
+    GOTO BOUCLE
+    
+END
