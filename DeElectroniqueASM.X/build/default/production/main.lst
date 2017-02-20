@@ -1,4 +1,4 @@
-MPASM 5.71                          MAIN.ASM   2-19-2017  22:17:38         PAGE  1
+MPASM 5.71                          MAIN.ASM   2-20-2017  7:36:19         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
@@ -19,101 +19,142 @@ Message[301]: MESSAGE: (Processor-header file mismatch.  Verify selected process
                       00207         LIST
                       00003     
                       00004     #DEFINE BOUTON PORTA,0
-                      00005     
-                      00006 BANK0 MACRO
-                      00007     BCF STATUS,RP0
-                      00008     ENDM
-                      00009     
-                      00010 BANK1 MACRO
-                      00011     BSF STATUS,RP0
-                      00012     ENDM
-                      00013     
-                      00014     ORG 0x00
-0000   2???           00015     GOTO START
-                      00016     
-                      00017 START ORG 0x05
-                      00018     BANK1
+Warning[207]: Found label after column 1. (COMPT1)
+  0000000D            00005     COMPT1 EQU 0x0D
+Warning[207]: Found label after column 1. (COMPT2)
+  0000000E            00006     COMPT2 EQU 0x0E
+                      00007     
+                      00008 BANK0 MACRO
+                      00009     BCF STATUS,RP0
+                      00010     ENDM
+                      00011     
+                      00012 BANK1 MACRO
+                      00013     BSF STATUS,RP0
+                      00014     ENDM
+                      00015     
+                      00016     ORG 0x00
+0000   2???           00017     GOTO START
+                      00018     
+                      00019 START ORG 0x05
+                      00020     BANK1
 0005   1683               M     BSF STATUS,RP0
-0006   30FF           00019     MOVLW 0xFF
+0006   30FF           00021     MOVLW 0xFF
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0007   0085           00020     MOVWF TRISA
-0008   3000           00021     MOVLW 0x00
+0007   0085           00022     MOVWF TRISA
+0008   3000           00023     MOVLW 0x00
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0009   0086           00022     MOVWF TRISB
-                      00023     BANK0
+0009   0086           00024     MOVWF TRISB
+                      00025     BANK0
 000A   1283               M     BCF STATUS,RP0
-000B   3000           00024     MOVLW 0x00
-000C   0085           00025     MOVWF PORTA
-000D   3000           00026     MOVLW 0x00
-000E   0086           00027     MOVWF PORTB
-                      00028 
-000F                  00029 BOUCLE
-000F   1C05           00030     BTFSS BOUTON
-0010   2???           00031     GOTO BOUCLE
-0011   2???           00032     GOTO SHOWONE
-                      00033     
-0012                  00034 SHOWONE
-0012   3006           00035     MOVLW 0x06
-0013   0086           00036     MOVWF PORTB
-0014   1C05           00037     BTFSS BOUTON
-0015   2???           00038     GOTO BOUCLE
-MPASM 5.71                          MAIN.ASM   2-19-2017  22:17:38         PAGE  2
+000B   3000           00026     MOVLW 0x00
+000C   0085           00027     MOVWF PORTA
+000D   3000           00028     MOVLW 0x00
+000E   0086           00029     MOVWF PORTB
+                      00030 
+000F                  00031 BOUCLE
+000F   1C05           00032     BTFSS BOUTON
+0010   2???           00033     GOTO BOUCLE
+0011   2???           00034     GOTO SHOWONE
+                      00035     
+0012                  00036 SHOWONE
+MPASM 5.71                          MAIN.ASM   2-20-2017  7:36:19         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-0016   2???           00039     GOTO SHOWTWO
-                      00040     
-0017                  00041 SHOWTWO
-0017   305B           00042     MOVLW 0x5B
-0018   0086           00043     MOVWF PORTB
-0019   1C05           00044     BTFSS BOUTON
-001A   2???           00045     GOTO BOUCLE
-001B   2???           00046     GOTO SHOWTHREE
-                      00047     
-001C                  00048 SHOWTHREE
-001C   304F           00049     MOVLW 0x4F
-001D   0086           00050     MOVWF PORTB
-001E   1C05           00051     BTFSS BOUTON
-001F   2???           00052     GOTO BOUCLE
-0020   2???           00053     GOTO SHOWFOUR
-                      00054     
-0021                  00055 SHOWFOUR
-0021   3066           00056     MOVLW 0x66
-0022   0086           00057     MOVWF PORTB
-0023   1C05           00058     BTFSS BOUTON
-0024   2???           00059     GOTO BOUCLE
-0025   2???           00060     GOTO SHOWFIVE
-                      00061     
-0026                  00062 SHOWFIVE
-0026   306D           00063     MOVLW 0x6D
-0027   0086           00064     MOVWF PORTB
-0028   1C05           00065     BTFSS BOUTON
-0029   2???           00066     GOTO BOUCLE
-002A   2???           00067     GOTO SHOWSIX
-                      00068     
-002B                  00069 SHOWSIX
-002B   307D           00070     MOVLW 0x7D
-002C   0086           00071     MOVWF PORTB
-002D   1C05           00072     BTFSS BOUTON
-002E   2???           00073     GOTO BOUCLE
-002F   2???           00074     GOTO SHOWONE
+0012   3006           00037     MOVLW 0x06
+0013   0086           00038     MOVWF PORTB
+0014   1C05           00039     BTFSS BOUTON
+0015   2???           00040     GOTO BOUCLE
+0016   2???           00041     CALL ATTENTE
+0017   2???           00042     GOTO SHOWTWO
+                      00043     
+0018                  00044 SHOWTWO
+0018   305B           00045     MOVLW 0x5B
+0019   0086           00046     MOVWF PORTB
+001A   1C05           00047     BTFSS BOUTON
+001B   2???           00048     GOTO BOUCLE
+001C   2???           00049     CALL ATTENTE
+001D   2???           00050     GOTO SHOWTHREE
+                      00051     
+001E                  00052 SHOWTHREE
+001E   304F           00053     MOVLW 0x4F
+001F   0086           00054     MOVWF PORTB
+0020   1C05           00055     BTFSS BOUTON
+0021   2???           00056     GOTO BOUCLE
+0022   2???           00057     CALL ATTENTE
+0023   2???           00058     GOTO SHOWFOUR
+                      00059     
+0024                  00060 SHOWFOUR
+0024   3066           00061     MOVLW 0x66
+0025   0086           00062     MOVWF PORTB
+0026   1C05           00063     BTFSS BOUTON
+0027   2???           00064     GOTO BOUCLE
+0028   2???           00065     CALL ATTENTE
+0029   2???           00066     GOTO SHOWFIVE
+                      00067     
+002A                  00068 SHOWFIVE
+002A   306D           00069     MOVLW 0x6D
+002B   0086           00070     MOVWF PORTB
+002C   1C05           00071     BTFSS BOUTON
+002D   2???           00072     GOTO BOUCLE
+002E   2???           00073     CALL ATTENTE
+002F   2???           00074     GOTO SHOWSIX
                       00075     
+0030                  00076 SHOWSIX
+0030   307D           00077     MOVLW 0x7D
+0031   0086           00078     MOVWF PORTB
+0032   1C05           00079     BTFSS BOUTON
+0033   2???           00080     GOTO BOUCLE
+0034   2???           00081     CALL ATTENTE
+0035   2???           00082     GOTO SHOWONE
+                      00083     
+0036                  00084 ATTENTE
+0036   3040           00085     MOVLW 0x40
+0037   008D           00086     MOVWF COMPT1
+0038   3040           00087     MOVLW 0x40
+0039   008E           00088     MOVWF COMPT2
+                      00089     ;CLRF COMPT1
+MPASM 5.71                          MAIN.ASM   2-20-2017  7:36:19         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00090     ;CLRF COMPT2
+                      00091     
+003A                  00092 DELAI1
+003A                  00093 DELAI
+Message[305]: Using default destination of 1 (file).
+003A   0B8E           00094     DECFSZ COMPT2
+003B   2???           00095     GOTO DELAI
+                      00096     
+Message[305]: Using default destination of 1 (file).
+003C   0B8D           00097     DECFSZ COMPT1
+003D   2???           00098     GOTO DELAI1
+                      00099     
+003E   0008           00100     RETURN
+                      00101     
 Warning[205]: Found directive in column 1. (END)
-                      00076 END
-MPASM 5.71                          MAIN.ASM   2-19-2017  22:17:38         PAGE  3
+                      00102 END
+MPASM 5.71                          MAIN.ASM   2-20-2017  7:36:19         PAGE  4
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+ATTENTE                           00000036
 BANK0                             
 BANK1                             
 BOUCLE                            0000000F
 BOUTON                            PORTA,0
 C                                 00000000
+COMPT1                            0000000D
+COMPT2                            0000000E
 DC                                00000001
+DELAI                             0000003A
+DELAI1                            0000003A
 EEADR                             00000009
 EECON1                            00000088
 EECON2                            00000089
@@ -156,21 +197,21 @@ RB6                               00000006
 RB7                               00000007
 RBIE                              00000003
 RBIF                              00000000
-RD                                00000000
-RP0                               00000005
-RP1                               00000006
-SHOWFIVE                          00000026
-SHOWFOUR                          00000021
-MPASM 5.71                          MAIN.ASM   2-19-2017  22:17:38         PAGE  4
+MPASM 5.71                          MAIN.ASM   2-20-2017  7:36:19         PAGE  5
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+RD                                00000000
+RP0                               00000005
+RP1                               00000006
+SHOWFIVE                          0000002A
+SHOWFOUR                          00000024
 SHOWONE                           00000012
-SHOWSIX                           0000002B
-SHOWTHREE                         0000001C
-SHOWTWO                           00000017
+SHOWSIX                           00000030
+SHOWTHREE                         0000001E
+SHOWTWO                           00000018
 START                             00000005
 STATUS                            00000003
 T0CS                              00000005
@@ -215,22 +256,22 @@ _IDLOC3                           00002003
 _LP_OSC                           00003FFC
 _PWRTE_OFF                        00003FFF
 _PWRTE_ON                         00003FF7
-_RC_OSC                           00003FFF
-_WDTE_OFF                         00003FFB
-_WDTE_ON                          00003FFF
-_WDT_OFF                          00003FFB
-_WDT_ON                           00003FFF
-MPASM 5.71                          MAIN.ASM   2-19-2017  22:17:38         PAGE  5
+MPASM 5.71                          MAIN.ASM   2-20-2017  7:36:19         PAGE  6
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+_RC_OSC                           00003FFF
+_WDTE_OFF                         00003FFB
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
 _XT_OSC                           00003FFD
 __16F84A                          00000001
 
 Errors   :     0
-Warnings :     1 reported,     0 suppressed
-Messages :     3 reported,     0 suppressed
+Warnings :     3 reported,     0 suppressed
+Messages :     5 reported,     0 suppressed
 
 

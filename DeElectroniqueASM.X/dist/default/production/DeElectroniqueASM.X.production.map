@@ -1,12 +1,12 @@
 MPLINK 5.08, LINKER
-Linker Map File - Created Sun Feb 19 22:17:42 2017
+Linker Map File - Created Mon Feb 20 07:36:20 2017
 
                                  Section Info
                   Section       Type    Address   Location Size(Bytes)
                 ---------  ---------  ---------  ---------  ---------
                    .org_0       code   0x000000    program   0x000002
                    .cinit    romdata   0x000001    program   0x000004
-                   .org_1       code   0x000005    program   0x000056
+                   .org_1       code   0x000005    program   0x000074
 
 
 
@@ -14,21 +14,24 @@ Linker Map File - Created Sun Feb 19 22:17:42 2017
                                Start         End      
                            ---------   ---------      
                             0x000000    0x000002      
-                            0x000005    0x00002f      
-            46 out of 1094 program addresses used, program memory utilization is 4%
+                            0x000005    0x00003e      
+            61 out of 1094 program addresses used, program memory utilization is 5%
 
 
 
                               Symbols - Sorted by Name
                      Name    Address   Location    Storage File                     
                 ---------  ---------  ---------  --------- ---------                
+                  ATTENTE   0x000036    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
                    BOUCLE   0x00000f    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
-                 SHOWFIVE   0x000026    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
-                 SHOWFOUR   0x000021    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
+                    DELAI   0x00003a    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
+                   DELAI1   0x00003a    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
+                 SHOWFIVE   0x00002a    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
+                 SHOWFOUR   0x000024    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
                   SHOWONE   0x000012    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
-                  SHOWSIX   0x00002b    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
-                SHOWTHREE   0x00001c    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
-                  SHOWTWO   0x000017    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
+                  SHOWSIX   0x000030    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
+                SHOWTHREE   0x00001e    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
+                  SHOWTWO   0x000018    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
                     START   0x000005    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
 
 
@@ -39,10 +42,13 @@ Linker Map File - Created Sun Feb 19 22:17:42 2017
                     START   0x000005    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
                    BOUCLE   0x00000f    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
                   SHOWONE   0x000012    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
-                  SHOWTWO   0x000017    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
-                SHOWTHREE   0x00001c    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
-                 SHOWFOUR   0x000021    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
-                 SHOWFIVE   0x000026    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
-                  SHOWSIX   0x00002b    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
+                  SHOWTWO   0x000018    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
+                SHOWTHREE   0x00001e    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
+                 SHOWFOUR   0x000024    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
+                 SHOWFIVE   0x00002a    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
+                  SHOWSIX   0x000030    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
+                  ATTENTE   0x000036    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
+                    DELAI   0x00003a    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
+                   DELAI1   0x00003a    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueASM.X\main.asm
 
 
