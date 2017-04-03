@@ -1,0 +1,8 @@
+Message[301] C:\PROGRAM FILES\MICROCHIP\MPLABX\V3.50\MPASMX\P16F84.INC 34 : MESSAGE: (Processor-header file mismatch.  Verify selected processor.)
+Warning[207] C:\USERS\AYMEN\MPLABXPROJECTS\DEELECTRONIQUEASM.X\NEW_MAIN.ASM 5 : Found label after column 1. (COMPT1)
+Warning[207] C:\USERS\AYMEN\MPLABXPROJECTS\DEELECTRONIQUEASM.X\NEW_MAIN.ASM 6 : Found label after column 1. (COMPT2)
+Message[302] C:\USERS\AYMEN\MPLABXPROJECTS\DEELECTRONIQUEASM.X\NEW_MAIN.ASM 22 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\AYMEN\MPLABXPROJECTS\DEELECTRONIQUEASM.X\NEW_MAIN.ASM 23 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[305] C:\USERS\AYMEN\MPLABXPROJECTS\DEELECTRONIQUEASM.X\NEW_MAIN.ASM 41 : Using default destination of 1 (file).
+Error[108]   C:\USERS\AYMEN\MPLABXPROJECTS\DEELECTRONIQUEASM.X\NEW_MAIN.ASM 55 : Illegal character (,)
+Warning[205] C:\USERS\AYMEN\MPLABXPROJECTS\DEELECTRONIQUEASM.X\NEW_MAIN.ASM 80 : Found directive in column 1. (END)

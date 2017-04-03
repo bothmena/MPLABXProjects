@@ -1,0 +1,246 @@
+MPASM 5.71                      NEW_MAIN.ASM   2-20-2017  10:59:24         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001     
+                      00002     #include p16f84.inc
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : Nov 17 2016
+                      00005 ;  MPASM PIC16F84 processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2016 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+Message[301]: MESSAGE: (Processor-header file mismatch.  Verify selected processor.)
+                      00207         LIST
+                      00003     
+                      00004     #DEFINE BOUTON PORTA,0
+Warning[207]: Found label after column 1. (COMPT1)
+  0000000D            00005     COMPT1 EQU 0x0D
+Warning[207]: Found label after column 1. (COMPT2)
+  0000000E            00006     COMPT2 EQU 0x0E
+                      00007     
+                      00008 BANK0 MACRO
+                      00009     BCF STATUS,RP0
+                      00010     ENDM
+                      00011     
+                      00012 BANK1 MACRO
+                      00013     BSF STATUS,RP0
+                      00014     ENDM
+                      00015     
+                      00016     ORG 0x00
+0000   2???           00017     GOTO START
+                      00018     
+                      00019 START ORG 0x05
+                      00020     BANK1
+0005   1683               M     BSF STATUS,RP0
+0006   30FF           00021     MOVLW 0xFF
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0007   0085           00022     MOVWF TRISA
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0008   0186           00023     CLRF TRISB
+                      00024     BANK0
+0009   1283               M     BCF STATUS,RP0
+000A   0185           00025     CLRF PORTA
+000B   0186           00026     CLRF PORTB
+                      00027 
+000C                  00028 BOUCLE
+000C   1C05           00029     BTFSS BOUTON
+000D   2???           00030     GOTO BOUCLE
+000E   2???           00031     CALL INCREMENT
+000F   2???           00032     CALL AFFICHER
+0010   0086           00033     MOVWF PORTB
+0011   2???           00034     CALL ATTENTE
+0012   2???           00035     GOTO BOUCLE
+                      00036     
+MPASM 5.71                      NEW_MAIN.ASM   2-20-2017  10:59:24         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0013                  00037 ATTENTE
+0013   300A           00038     MOVLW .10
+0014   008E           00039     MOVWF COMPT2
+0015                  00040 DELAI
+Message[305]: Using default destination of 1 (file).
+0015   0B8E           00041     DECFSZ COMPT2
+0016   2???           00042     GOTO DELAI
+0017   0008           00043     RETURN
+                      00044     
+                      00045 ;INCREMENT ==> premiere methode, tricky code! mais correcte
+                      00046 ;    MOVLW 0x06
+                      00047 ;    SUBLW COMPT1,0
+                      00048 ;    BTFSC STATUS,Z
+                      00049 ;    CLRF COMPT1
+                      00050 ;    INCF COMPT1,1
+                      00051 ;    RETURN
+                      00052     
+0018                  00053 INCREMENT
+0018   3006           00054     MOVLW 0x06
+Error[108]  : Illegal character (,)
+0019   3C00           00055     SUBLW COMPT1,0
+001A   1D03           00056     BTFSS STATUS,Z
+001B   2???           00057     GOTO CAS1
+001C   2???           00058     GOTO CAS2
+                      00059     
+001D                  00060 CAS1
+001D   0A8D           00061     INCF COMPT1,1
+001E   0008           00062     RETURN
+                      00063     
+001F                  00064 CAS2
+001F   3001           00065     MOVLW .1
+0020   008D           00066     MOVWF COMPT1
+0021   0008           00067     RETURN
+                      00068     
+0022                  00069 AFFICHER
+0022   080D           00070     MOVF COMPT1,W
+0023   0782           00071     ADDWF PCL,1
+0024   3406           00072     RETLW 0x06
+0025   345B           00073     RETLW 0x5B
+0026   344F           00074     RETLW 0x4F
+0027   3466           00075     RETLW 0x66
+0028   346D           00076     RETLW 0x6D
+0029   347D           00077     RETLW 0x7D
+002A   0008           00078     RETURN
+                      00079 
+Warning[205]: Found directive in column 1. (END)
+                      00080 END
+MPASM 5.71                      NEW_MAIN.ASM   2-20-2017  10:59:24         PAGE  3
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+AFFICHER                          00000022
+ATTENTE                           00000013
+BANK0                             
+BANK1                             
+BOUCLE                            0000000C
+BOUTON                            PORTA,0
+C                                 00000000
+CAS1                              0000001D
+CAS2                              0000001F
+COMPT1                            0000000D
+COMPT2                            0000000E
+DC                                00000001
+DELAI                             00000015
+EEADR                             00000009
+EECON1                            00000088
+EECON2                            00000089
+EEDATA                            00000008
+EEIE                              00000006
+EEIF                              00000004
+F                                 00000001
+FSR                               00000004
+GIE                               00000007
+INCREMENT                         00000018
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+NOT_PD                            00000003
+NOT_RBPU                          00000007
+NOT_TO                            00000004
+OPTION_REG                        00000081
+PCL                               00000002
+PCLATH                            0000000A
+PORTA                             00000005
+PORTB                             00000006
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+MPASM 5.71                      NEW_MAIN.ASM   2-20-2017  10:59:24         PAGE  4
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RD                                00000000
+RP0                               00000005
+RP1                               00000006
+START                             00000005
+STATUS                            00000003
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+W                                 00000000
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+Z                                 00000002
+_CONFIG                           00002007
+_CP_OFF                           00003FFF
+_CP_ON                            0000000F
+_FOSC_EXTRC                       00003FFF
+_FOSC_HS                          00003FFE
+_FOSC_LP                          00003FFC
+_FOSC_XT                          00003FFD
+_HS_OSC                           00003FFE
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_LP_OSC                           00003FFC
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_WDTE_OFF                         00003FFB
+_WDTE_ON                          00003FFF
+MPASM 5.71                      NEW_MAIN.ASM   2-20-2017  10:59:24         PAGE  5
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_XT_OSC                           00003FFD
+__16F84A                          00000001
+
+Errors   :     1
+Warnings :     3 reported,     0 suppressed
+Messages :     4 reported,     0 suppressed
+
+

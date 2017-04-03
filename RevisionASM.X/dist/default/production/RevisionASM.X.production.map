@@ -1,0 +1,52 @@
+MPLINK 5.08, LINKER
+Linker Map File - Created Tue Feb 28 10:07:23 2017
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000002
+                   .cinit    romdata   0x000001    program   0x000004
+                   .org_1       code   0x000005    program   0x00008e
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000002      
+                            0x000005    0x00004b      
+            74 out of 1094 program addresses used, program memory utilization is 6%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                  ADD_ONE   0x00001e    program     static C:\Users\Aymen\MPLABXProjects\RevisionASM.X\main.asm
+                 AFFICHER   0x000020    program     static C:\Users\Aymen\MPLABXProjects\RevisionASM.X\main.asm
+                   BOUCLE   0x00000f    program     static C:\Users\Aymen\MPLABXProjects\RevisionASM.X\main.asm
+                    DELAY   0x000041    program     static C:\Users\Aymen\MPLABXProjects\RevisionASM.X\main.asm
+                   DELAY1   0x000046    program     static C:\Users\Aymen\MPLABXProjects\RevisionASM.X\main.asm
+                   DELAY2   0x000049    program     static C:\Users\Aymen\MPLABXProjects\RevisionASM.X\main.asm
+                INCREMENT   0x000029    program     static C:\Users\Aymen\MPLABXProjects\RevisionASM.X\main.asm
+               INCREMENT2   0x000016    program     static C:\Users\Aymen\MPLABXProjects\RevisionASM.X\main.asm
+            RETOUR_TO_ONE   0x00001b    program     static C:\Users\Aymen\MPLABXProjects\RevisionASM.X\main.asm
+                    START   0x000005    program     static C:\Users\Aymen\MPLABXProjects\RevisionASM.X\main.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                    START   0x000005    program     static C:\Users\Aymen\MPLABXProjects\RevisionASM.X\main.asm
+                   BOUCLE   0x00000f    program     static C:\Users\Aymen\MPLABXProjects\RevisionASM.X\main.asm
+               INCREMENT2   0x000016    program     static C:\Users\Aymen\MPLABXProjects\RevisionASM.X\main.asm
+            RETOUR_TO_ONE   0x00001b    program     static C:\Users\Aymen\MPLABXProjects\RevisionASM.X\main.asm
+                  ADD_ONE   0x00001e    program     static C:\Users\Aymen\MPLABXProjects\RevisionASM.X\main.asm
+                 AFFICHER   0x000020    program     static C:\Users\Aymen\MPLABXProjects\RevisionASM.X\main.asm
+                INCREMENT   0x000029    program     static C:\Users\Aymen\MPLABXProjects\RevisionASM.X\main.asm
+                    DELAY   0x000041    program     static C:\Users\Aymen\MPLABXProjects\RevisionASM.X\main.asm
+                   DELAY1   0x000046    program     static C:\Users\Aymen\MPLABXProjects\RevisionASM.X\main.asm
+                   DELAY2   0x000049    program     static C:\Users\Aymen\MPLABXProjects\RevisionASM.X\main.asm
+
+

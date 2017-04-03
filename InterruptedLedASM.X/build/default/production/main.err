@@ -1,0 +1,3 @@
+Message[301] C:\PROGRAM FILES\MICROCHIP\MPLABX\V3.50\MPASMX\P16F84.INC 34 : MESSAGE: (Processor-header file mismatch.  Verify selected processor.)
+Message[302] C:\USERS\AYMEN\MPLABXPROJECTS\INTERRUPTEDLEDASM.X\MAIN.ASM 28 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] C:\USERS\AYMEN\MPLABXPROJECTS\INTERRUPTEDLEDASM.X\MAIN.ASM 30 : Register in operand not in bank 0.  Ensure that bank bits are correct.

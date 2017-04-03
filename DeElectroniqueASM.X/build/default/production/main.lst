@@ -1,10 +1,10 @@
-MPASM 5.71                          MAIN.ASM   2-20-2017  7:36:19         PAGE  1
+MPASM 5.71                          MAIN.ASM   2-20-2017  11:01:12         PAGE  1
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-                      00001     
+                      00001         
                       00002     #include p16f84.inc
                       00001         LIST
                       00002 
@@ -41,120 +41,94 @@ Warning[207]: Found label after column 1. (COMPT2)
 0006   30FF           00021     MOVLW 0xFF
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
 0007   0085           00022     MOVWF TRISA
-0008   3000           00023     MOVLW 0x00
 Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
-0009   0086           00024     MOVWF TRISB
-                      00025     BANK0
-000A   1283               M     BCF STATUS,RP0
-000B   3000           00026     MOVLW 0x00
-000C   0085           00027     MOVWF PORTA
-000D   3000           00028     MOVLW 0x00
-000E   0086           00029     MOVWF PORTB
-                      00030 
-000F                  00031 BOUCLE
-000F   1C05           00032     BTFSS BOUTON
-0010   2???           00033     GOTO BOUCLE
-0011   2???           00034     GOTO SHOWONE
-                      00035     
-0012                  00036 SHOWONE
-MPASM 5.71                          MAIN.ASM   2-20-2017  7:36:19         PAGE  2
+0008   0186           00023     CLRF TRISB
+                      00024     BANK0
+0009   1283               M     BCF STATUS,RP0
+000A   0185           00025     CLRF PORTA
+000B   0186           00026     CLRF PORTB
+                      00027 
+000C                  00028 BOUCLE
+000C   1C05           00029     BTFSS BOUTON
+000D   2???           00030     GOTO BOUCLE
+000E   2???           00031     CALL INCREMENT
+000F   2???           00032     CALL AFFICHER
+0010   0086           00033     MOVWF PORTB
+0011   2???           00034     CALL ATTENTE
+0012   2???           00035     GOTO BOUCLE
+                      00036     
+MPASM 5.71                          MAIN.ASM   2-20-2017  11:01:12         PAGE  2
 
 
 LOC  OBJECT CODE     LINE SOURCE TEXT
   VALUE
 
-0012   3006           00037     MOVLW 0x06
-0013   0086           00038     MOVWF PORTB
-0014   1C05           00039     BTFSS BOUTON
-0015   2???           00040     GOTO BOUCLE
-0016   2???           00041     CALL ATTENTE
-0017   2???           00042     GOTO SHOWTWO
-                      00043     
-0018                  00044 SHOWTWO
-0018   305B           00045     MOVLW 0x5B
-0019   0086           00046     MOVWF PORTB
-001A   1C05           00047     BTFSS BOUTON
-001B   2???           00048     GOTO BOUCLE
-001C   2???           00049     CALL ATTENTE
-001D   2???           00050     GOTO SHOWTHREE
-                      00051     
-001E                  00052 SHOWTHREE
-001E   304F           00053     MOVLW 0x4F
-001F   0086           00054     MOVWF PORTB
-0020   1C05           00055     BTFSS BOUTON
-0021   2???           00056     GOTO BOUCLE
-0022   2???           00057     CALL ATTENTE
-0023   2???           00058     GOTO SHOWFOUR
+0013                  00037 ATTENTE
+0013   300A           00038     MOVLW .10
+0014   008E           00039     MOVWF COMPT2
+0015                  00040 DELAI
+Message[305]: Using default destination of 1 (file).
+0015   0B8E           00041     DECFSZ COMPT2
+0016   2???           00042     GOTO DELAI
+0017   0008           00043     RETURN
+                      00044     
+                      00045 ;INCREMENT ==> premiere methode, tricky code! mais correcte
+                      00046 ;    MOVLW 0x06
+                      00047 ;    SUBLW COMPT1,0
+                      00048 ;    BTFSC STATUS,Z
+                      00049 ;    CLRF COMPT1
+                      00050 ;    INCF COMPT1,1
+                      00051 ;    RETURN
+                      00052     
+0018                  00053 INCREMENT
+0018   3006           00054     MOVLW 0x06
+Error[108]  : Illegal character (,)
+0019   3C00           00055     SUBLW COMPT1,0
+001A   1D03           00056     BTFSS STATUS,Z
+001B   2???           00057     GOTO CAS1
+001C   2???           00058     GOTO CAS2
                       00059     
-0024                  00060 SHOWFOUR
-0024   3066           00061     MOVLW 0x66
-0025   0086           00062     MOVWF PORTB
-0026   1C05           00063     BTFSS BOUTON
-0027   2???           00064     GOTO BOUCLE
-0028   2???           00065     CALL ATTENTE
-0029   2???           00066     GOTO SHOWFIVE
-                      00067     
-002A                  00068 SHOWFIVE
-002A   306D           00069     MOVLW 0x6D
-002B   0086           00070     MOVWF PORTB
-002C   1C05           00071     BTFSS BOUTON
-002D   2???           00072     GOTO BOUCLE
-002E   2???           00073     CALL ATTENTE
-002F   2???           00074     GOTO SHOWSIX
-                      00075     
-0030                  00076 SHOWSIX
-0030   307D           00077     MOVLW 0x7D
-0031   0086           00078     MOVWF PORTB
-0032   1C05           00079     BTFSS BOUTON
-0033   2???           00080     GOTO BOUCLE
-0034   2???           00081     CALL ATTENTE
-0035   2???           00082     GOTO SHOWONE
-                      00083     
-0036                  00084 ATTENTE
-0036   3040           00085     MOVLW 0x40
-0037   008D           00086     MOVWF COMPT1
-0038   3040           00087     MOVLW 0x40
-0039   008E           00088     MOVWF COMPT2
-                      00089     ;CLRF COMPT1
-MPASM 5.71                          MAIN.ASM   2-20-2017  7:36:19         PAGE  3
-
-
-LOC  OBJECT CODE     LINE SOURCE TEXT
-  VALUE
-
-                      00090     ;CLRF COMPT2
-                      00091     
-003A                  00092 DELAI1
-003A                  00093 DELAI
-Message[305]: Using default destination of 1 (file).
-003A   0B8E           00094     DECFSZ COMPT2
-003B   2???           00095     GOTO DELAI
-                      00096     
-Message[305]: Using default destination of 1 (file).
-003C   0B8D           00097     DECFSZ COMPT1
-003D   2???           00098     GOTO DELAI1
-                      00099     
-003E   0008           00100     RETURN
-                      00101     
+001D                  00060 CAS1
+001D   0A8D           00061     INCF COMPT1,1
+001E   0008           00062     RETURN
+                      00063     
+001F                  00064 CAS2
+001F   3001           00065     MOVLW .1
+0020   008D           00066     MOVWF COMPT1
+0021   0008           00067     RETURN
+                      00068     
+0022                  00069 AFFICHER
+0022   080D           00070     MOVF COMPT1,W
+0023   0782           00071     ADDWF PCL,1
+0024   3406           00072     RETLW 0x06
+0025   345B           00073     RETLW 0x5B
+0026   344F           00074     RETLW 0x4F
+0027   3466           00075     RETLW 0x66
+0028   346D           00076     RETLW 0x6D
+0029   347D           00077     RETLW 0x7D
+002A   0008           00078     RETURN
+                      00079 
 Warning[205]: Found directive in column 1. (END)
-                      00102 END
-MPASM 5.71                          MAIN.ASM   2-20-2017  7:36:19         PAGE  4
+                      00080 END
+MPASM 5.71                          MAIN.ASM   2-20-2017  11:01:12         PAGE  3
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
-ATTENTE                           00000036
+AFFICHER                          00000022
+ATTENTE                           00000013
 BANK0                             
 BANK1                             
-BOUCLE                            0000000F
+BOUCLE                            0000000C
 BOUTON                            PORTA,0
 C                                 00000000
+CAS1                              0000001D
+CAS2                              0000001F
 COMPT1                            0000000D
 COMPT2                            0000000E
 DC                                00000001
-DELAI                             0000003A
-DELAI1                            0000003A
+DELAI                             00000015
 EEADR                             00000009
 EECON1                            00000088
 EECON2                            00000089
@@ -164,6 +138,7 @@ EEIF                              00000004
 F                                 00000001
 FSR                               00000004
 GIE                               00000007
+INCREMENT                         00000018
 INDF                              00000000
 INTCON                            0000000B
 INTE                              00000004
@@ -194,24 +169,18 @@ RB3                               00000003
 RB4                               00000004
 RB5                               00000005
 RB6                               00000006
-RB7                               00000007
-RBIE                              00000003
-RBIF                              00000000
-MPASM 5.71                          MAIN.ASM   2-20-2017  7:36:19         PAGE  5
+MPASM 5.71                          MAIN.ASM   2-20-2017  11:01:12         PAGE  4
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
 RD                                00000000
 RP0                               00000005
 RP1                               00000006
-SHOWFIVE                          0000002A
-SHOWFOUR                          00000024
-SHOWONE                           00000012
-SHOWSIX                           00000030
-SHOWTHREE                         0000001E
-SHOWTWO                           00000018
 START                             00000005
 STATUS                            00000003
 T0CS                              00000005
@@ -256,22 +225,22 @@ _IDLOC3                           00002003
 _LP_OSC                           00003FFC
 _PWRTE_OFF                        00003FFF
 _PWRTE_ON                         00003FF7
-MPASM 5.71                          MAIN.ASM   2-20-2017  7:36:19         PAGE  6
+_RC_OSC                           00003FFF
+_WDTE_OFF                         00003FFB
+_WDTE_ON                          00003FFF
+MPASM 5.71                          MAIN.ASM   2-20-2017  11:01:12         PAGE  5
 
 
 SYMBOL TABLE
   LABEL                             VALUE 
 
-_RC_OSC                           00003FFF
-_WDTE_OFF                         00003FFB
-_WDTE_ON                          00003FFF
 _WDT_OFF                          00003FFB
 _WDT_ON                           00003FFF
 _XT_OSC                           00003FFD
 __16F84A                          00000001
 
-Errors   :     0
+Errors   :     1
 Warnings :     3 reported,     0 suppressed
-Messages :     5 reported,     0 suppressed
+Messages :     4 reported,     0 suppressed
 
 

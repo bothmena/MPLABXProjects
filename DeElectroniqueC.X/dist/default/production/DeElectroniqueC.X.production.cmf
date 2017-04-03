@@ -11,8 +11,6 @@
 # All addresses and the length are given in unqualified hexadecimal
 # in delta units.  Any other numeric values are decimal.
 %PSECTS
-$C:\Users\Aymen\AppData\Local\Temp\s868.obj
-end_init CODE 0 0 0 1 2
 $dist/default/production\DeElectroniqueC.X.production.obj
 cinit CODE 0 3FE 3FE 2 2
 text1 CODE 0 332 332 24 2
@@ -21,6 +19,8 @@ text3 CODE 0 3B2 3B2 4C 2
 maintext CODE 0 356 356 26 2
 cstackBANK0 BANK0 1 C C 9 1
 swtext1 CONST 0 1 1 7 2
+$C:\Users\Aymen\AppData\Local\Temp\sk0.obj
+end_init CODE 0 0 0 1 2
 # %UNUSED Section
 # This section enumerates the unused ranges of each CLASS. Each entry
 # is described on a single line as follows:
@@ -54,11 +54,11 @@ STRING 8-331 2
 # All other numeric values are in decimal.
 %LINETAB
 $dist/default/production\DeElectroniqueC.X.production.obj
-3FE cinit CODE >76:C:\Users\Aymen\AppData\Local\Temp\s868.
-3FE cinit CODE >79:C:\Users\Aymen\AppData\Local\Temp\s868.
-3FE cinit CODE >85:C:\Users\Aymen\AppData\Local\Temp\s868.
-3FE cinit CODE >87:C:\Users\Aymen\AppData\Local\Temp\s868.
-3FF cinit CODE >88:C:\Users\Aymen\AppData\Local\Temp\s868.
+3FE cinit CODE >76:C:\Users\Aymen\AppData\Local\Temp\sk0.
+3FE cinit CODE >79:C:\Users\Aymen\AppData\Local\Temp\sk0.
+3FE cinit CODE >85:C:\Users\Aymen\AppData\Local\Temp\sk0.
+3FE cinit CODE >87:C:\Users\Aymen\AppData\Local\Temp\sk0.
+3FF cinit CODE >88:C:\Users\Aymen\AppData\Local\Temp\sk0.
 3B2 text3 CODE >6:C:\Program Files\Microchip\xc8\v1.40\sources\common\awmod.c
 3B2 text3 CODE >13:C:\Program Files\Microchip\xc8\v1.40\sources\common\awmod.c
 3B4 text3 CODE >14:C:\Program Files\Microchip\xc8\v1.40\sources\common\awmod.c
@@ -129,23 +129,23 @@ __Heeprom_data 0 0 EEDATA 3 eeprom_data -
 __end_of_attente 764 0 CODE 0 text2 dist/default/production\DeElectroniqueC.X.production.obj
 main@i 13 0 BANK0 1 cstackBANK0 dist/default/production\DeElectroniqueC.X.production.obj
 __Hstrings 0 0 ABS 0 strings -
-___sp 0 0 STACK 2 stack C:\Users\Aymen\AppData\Local\Temp\s868.obj
+___sp 0 0 STACK 2 stack C:\Users\Aymen\AppData\Local\Temp\sk0.obj
 _main 6AC 0 CODE 0 maintext dist/default/production\DeElectroniqueC.X.production.obj
 _show 664 0 CODE 0 text1 dist/default/production\DeElectroniqueC.X.production.obj
 btemp 4E 0 ABS 0 - dist/default/production\DeElectroniqueC.X.production.obj
-start 0 0 CODE 0 init C:\Users\Aymen\AppData\Local\Temp\s868.obj
+start 0 0 CODE 0 init C:\Users\Aymen\AppData\Local\Temp\sk0.obj
 __size_of___awmod 0 0 ABS 0 - dist/default/production\DeElectroniqueC.X.production.obj
 __size_of_main 0 0 ABS 0 - dist/default/production\DeElectroniqueC.X.production.obj
 __size_of_show 0 0 ABS 0 - dist/default/production\DeElectroniqueC.X.production.obj
 __Hpowerup 0 0 CODE 0 powerup -
 show@i 10 0 BANK0 1 cstackBANK0 dist/default/production\DeElectroniqueC.X.production.obj
 ___awmod@sign 12 0 BANK0 1 cstackBANK0 dist/default/production\DeElectroniqueC.X.production.obj
-intlevel0 0 0 CODE 0 functab C:\Users\Aymen\AppData\Local\Temp\s868.obj
-intlevel1 0 0 CODE 0 functab C:\Users\Aymen\AppData\Local\Temp\s868.obj
-intlevel2 0 0 CODE 0 functab C:\Users\Aymen\AppData\Local\Temp\s868.obj
-intlevel3 0 0 CODE 0 functab C:\Users\Aymen\AppData\Local\Temp\s868.obj
-intlevel4 0 0 CODE 0 functab C:\Users\Aymen\AppData\Local\Temp\s868.obj
-intlevel5 0 0 CODE 0 functab C:\Users\Aymen\AppData\Local\Temp\s868.obj
+intlevel0 0 0 CODE 0 functab C:\Users\Aymen\AppData\Local\Temp\sk0.obj
+intlevel1 0 0 CODE 0 functab C:\Users\Aymen\AppData\Local\Temp\sk0.obj
+intlevel2 0 0 CODE 0 functab C:\Users\Aymen\AppData\Local\Temp\sk0.obj
+intlevel3 0 0 CODE 0 functab C:\Users\Aymen\AppData\Local\Temp\sk0.obj
+intlevel4 0 0 CODE 0 functab C:\Users\Aymen\AppData\Local\Temp\sk0.obj
+intlevel5 0 0 CODE 0 functab C:\Users\Aymen\AppData\Local\Temp\sk0.obj
 wtemp0 4E 0 ABS 0 - dist/default/production\DeElectroniqueC.X.production.obj
 __Hfunctab 0 0 CODE 0 functab -
 __Hclrtext 0 0 ABS 0 clrtext -
@@ -153,7 +153,7 @@ __Lmaintext 0 0 ABS 0 maintext -
 __end_of___awmod 7FC 0 CODE 0 text3 dist/default/production\DeElectroniqueC.X.production.obj
 start_initialization 7FC 0 CODE 0 cinit dist/default/production\DeElectroniqueC.X.production.obj
 __pcstackBANK0 C 0 BANK0 1 cstackBANK0 dist/default/production\DeElectroniqueC.X.production.obj
-___int_sp 0 0 STACK 2 stack C:\Users\Aymen\AppData\Local\Temp\s868.obj
+___int_sp 0 0 STACK 2 stack C:\Users\Aymen\AppData\Local\Temp\sk0.obj
 __Hbank0 0 0 ABS 0 bank0 -
 __Hbank1 0 0 BANK1 1 bank1 -
 __Hcinit 800 0 CODE 0 cinit -
@@ -188,14 +188,14 @@ __S1 15 0 ABS 0 - -
 __S2 0 0 ABS 0 - -
 __S3 0 0 ABS 0 - -
 __Lintentry 0 0 CODE 0 intentry -
-reset_vec 0 0 CODE 0 reset_vec C:\Users\Aymen\AppData\Local\Temp\s868.obj
+reset_vec 0 0 CODE 0 reset_vec C:\Users\Aymen\AppData\Local\Temp\sk0.obj
 ___awmod@counter 11 0 BANK0 1 cstackBANK0 dist/default/production\DeElectroniqueC.X.production.obj
 ___awmod 764 0 CODE 0 text3 dist/default/production\DeElectroniqueC.X.production.obj
 __pmaintext 6AC 0 CODE 0 maintext dist/default/production\DeElectroniqueC.X.production.obj
 __Lcommon 0 0 ABS 0 common -
 __Lconfig 0 0 CONFIG 0 config -
-stackhi 0 0 ABS 0 - C:\Users\Aymen\AppData\Local\Temp\s868.obj
-stacklo 0 0 ABS 0 - C:\Users\Aymen\AppData\Local\Temp\s868.obj
+stackhi 0 0 ABS 0 - C:\Users\Aymen\AppData\Local\Temp\sk0.obj
+stacklo 0 0 ABS 0 - C:\Users\Aymen\AppData\Local\Temp\sk0.obj
 __Lspace_0 0 0 ABS 0 - -
 __Lspace_1 0 0 ABS 0 - -
 __Lspace_2 0 0 ABS 0 - -

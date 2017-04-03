@@ -1,0 +1,290 @@
+MPASM 5.71                          MAIN.ASM   2-28-2017  10:07:22         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 
+                      00002     #INCLUDE p16f84.inc
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : Nov 17 2016
+                      00005 ;  MPASM PIC16F84 processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2016 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+Message[301]: MESSAGE: (Processor-header file mismatch.  Verify selected processor.)
+                      00207         LIST
+                      00003     
+                      00004     #DEFINE BUTTON PORTA,0
+                      00005     
+  0000000D            00006 COMPT1 EQU 0x0D
+  0000000E            00007 COMPT2 EQU 0x0E   
+  0000000F            00008 INDEX EQU 0x0F 
+                      00009     
+                      00010 BANK0 MACRO
+                      00011     BCF STATUS,RP0
+                      00012     ENDM
+                      00013 BANK1 MACRO
+                      00014     BSF STATUS,RP0
+                      00015     ENDM
+                      00016     
+                      00017     ORG 0x00
+0000   2???           00018     GOTO START
+                      00019     
+                      00020 START ORG 0x05
+                      00021     BANK1
+0005   1683               M     BSF STATUS,RP0
+0006   30FF           00022     MOVLW 0xFF
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0007   0085           00023     MOVWF TRISA
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0008   0186           00024     CLRF TRISB
+                      00025     BANK0
+0009   1283               M     BCF STATUS,RP0
+000A   0185           00026     CLRF PORTA
+000B   0186           00027     CLRF PORTB
+000C   3000           00028     MOVLW 0x00
+000D   008F           00029     MOVWF INDEX
+000E   2???           00030     GOTO BOUCLE
+                      00031     
+000F                  00032 BOUCLE
+000F   1C05           00033     BTFSS BUTTON
+0010   2???           00034     GOTO BOUCLE
+                      00035     ;CALL INCREMENT
+0011   2???           00036     CALL INCREMENT2 ;;;
+0012   2???           00037     CALL AFFICHER   ;;;
+0013   0086           00038     MOVWF PORTB
+MPASM 5.71                          MAIN.ASM   2-28-2017  10:07:22         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0014   2???           00039     CALL DELAY
+0015   2???           00040     GOTO BOUCLE
+                      00041     
+0016                  00042 INCREMENT2
+0016   3006           00043     MOVLW 0x06
+0017   020F           00044     SUBWF INDEX, 0
+0018   1903           00045     BTFSC STATUS,Z
+0019   2???           00046     GOTO RETOUR_TO_ONE
+001A   2???           00047     GOTO ADD_ONE
+                      00048     
+001B                  00049 RETOUR_TO_ONE
+001B   3001           00050     MOVLW 0x01
+001C   008F           00051     MOVWF INDEX
+001D   0008           00052     RETURN
+                      00053     
+001E                  00054 ADD_ONE
+001E   0A8F           00055     INCF INDEX, 1
+001F   0008           00056     RETURN
+                      00057     
+0020                  00058 AFFICHER
+                      00059     
+0020   080F           00060     MOVF INDEX, 0
+0021   0782           00061     ADDWF PCL, 1
+0022   0000           00062     NOP
+0023   3406           00063     RETLW 0x06
+0024   345B           00064     RETLW 0x5B
+0025   344F           00065     RETLW 0x4F
+0026   3466           00066     RETLW 0x66
+0027   346D           00067     RETLW 0x6D
+0028   347D           00068     RETLW 0x7D
+                      00069     
+0029                  00070 INCREMENT
+0029   0806           00071     MOVF PORTB, 0
+002A   3C06           00072     SUBLW 0x06 ;1
+002B   1903           00073     BTFSC STATUS,Z
+002C   345B           00074     RETLW 0x5B
+                      00075     
+002D   0806           00076     MOVF PORTB, 0
+002E   3C5B           00077     SUBLW 0x5B ;2
+002F   1903           00078     BTFSC STATUS,Z
+0030   344F           00079     RETLW 0x4F
+                      00080     
+0031   0806           00081     MOVF PORTB, 0
+0032   3C4F           00082     SUBLW 0x4F ;3
+0033   1903           00083     BTFSC STATUS,Z
+0034   3466           00084     RETLW 0x66
+                      00085     
+0035   0806           00086     MOVF PORTB, 0
+0036   3C66           00087     SUBLW 0x66 ;4
+0037   1903           00088     BTFSC STATUS,Z
+0038   346D           00089     RETLW 0x6D
+                      00090     
+0039   0806           00091     MOVF PORTB, 0
+MPASM 5.71                          MAIN.ASM   2-28-2017  10:07:22         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+003A   3C6D           00092     SUBLW 0x6D ;5
+003B   1903           00093     BTFSC STATUS,Z
+003C   347D           00094     RETLW 0x7D
+                      00095     
+003D   0806           00096     MOVF PORTB, 0
+003E   3C7D           00097     SUBLW 0x7D ;6
+003F   1903           00098     BTFSC STATUS,Z
+0040   3406           00099     RETLW 0x06
+                      00100    
+                      00101 ;0x06 0x5B 0x4F 0x66 0x6D 0x7D
+                      00102     
+0041                  00103 DELAY
+0041   3040           00104     MOVLW .64
+0042   008D           00105     MOVWF COMPT1
+0043   3040           00106     MOVLW .64
+0044   008E           00107     MOVWF COMPT2
+0045   2???           00108     GOTO DELAY1
+0046                  00109 DELAY1
+Message[305]: Using default destination of 1 (file).
+0046   0B8D           00110     DECFSZ COMPT1
+0047   2???           00111     GOTO DELAY2
+0048   0008           00112     RETURN
+0049                  00113 DELAY2
+Message[305]: Using default destination of 1 (file).
+0049   0B8E           00114     DECFSZ COMPT2
+004A   2???           00115     GOTO DELAY2
+004B   2???           00116     GOTO DELAY1
+                      00117     
+                      00118     END
+MPASM 5.71                          MAIN.ASM   2-28-2017  10:07:22         PAGE  4
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+ADD_ONE                           0000001E
+AFFICHER                          00000020
+BANK0                             
+BANK1                             
+BOUCLE                            0000000F
+BUTTON                            PORTA,0
+C                                 00000000
+COMPT1                            0000000D
+COMPT2                            0000000E
+DC                                00000001
+DELAY                             00000041
+DELAY1                            00000046
+DELAY2                            00000049
+EEADR                             00000009
+EECON1                            00000088
+EECON2                            00000089
+EEDATA                            00000008
+EEIE                              00000006
+EEIF                              00000004
+F                                 00000001
+FSR                               00000004
+GIE                               00000007
+INCREMENT                         00000029
+INCREMENT2                        00000016
+INDEX                             0000000F
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+NOT_PD                            00000003
+NOT_RBPU                          00000007
+NOT_TO                            00000004
+OPTION_REG                        00000081
+PCL                               00000002
+PCLATH                            0000000A
+PORTA                             00000005
+PORTB                             00000006
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+RB4                               00000004
+MPASM 5.71                          MAIN.ASM   2-28-2017  10:07:22         PAGE  5
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RD                                00000000
+RETOUR_TO_ONE                     0000001B
+RP0                               00000005
+RP1                               00000006
+START                             00000005
+STATUS                            00000003
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+W                                 00000000
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+Z                                 00000002
+_CONFIG                           00002007
+_CP_OFF                           00003FFF
+_CP_ON                            0000000F
+_FOSC_EXTRC                       00003FFF
+_FOSC_HS                          00003FFE
+_FOSC_LP                          00003FFC
+_FOSC_XT                          00003FFD
+_HS_OSC                           00003FFE
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_LP_OSC                           00003FFC
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+MPASM 5.71                          MAIN.ASM   2-28-2017  10:07:22         PAGE  6
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_RC_OSC                           00003FFF
+_WDTE_OFF                         00003FFB
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_XT_OSC                           00003FFD
+__16F84A                          00000001
+
+Errors   :     0
+Warnings :     0 reported,     0 suppressed
+Messages :     5 reported,     0 suppressed
+
+

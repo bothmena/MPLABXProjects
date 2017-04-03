@@ -5,7 +5,7 @@ Linker command line:
 -W-3 --edf=C:\Program Files\Microchip\xc8\v1.40\dat\en_msgs.txt -cs \
   -h+dist/default/production\DeElectroniqueC.X.production.sym \
   --cmf=dist/default/production\DeElectroniqueC.X.production.cmf -z \
-  -Q16F84A -oC:\Users\Aymen\AppData\Local\Temp\s868.2 \
+  -Q16F84A -oC:\Users\Aymen\AppData\Local\Temp\sk0.2 \
   -Mdist/default/production/DeElectroniqueC.X.production.map -E1 -ver=XC8 \
   -ASTACK=015h-04dh -pstack=STACK -ACODE=00h-03FFh -ASTRCODE=00h-03FFh \
   -ASTRING=00h-0FFhx4 -ACONST=00h-0FFhx4 -AENTRY=00h-0FFhx4 \
@@ -15,7 +15,7 @@ Linker command line:
   -pconfig=CONFIG -DCONFIG=2 -AIDLOC=02000h-02003h -pidloc=IDLOC -DIDLOC=2 \
   -AEEDATA=00h-03Fh/02100h -peeprom_data=EEDATA -DEEDATA=2 -DCODE=2 \
   -DSTRCODE=2 -DSTRING=2 -DCONST=2 -DENTRY=2 -k \
-  C:\Users\Aymen\AppData\Local\Temp\s868.obj \
+  C:\Users\Aymen\AppData\Local\Temp\sk0.obj \
   dist/default/production\DeElectroniqueC.X.production.obj 
 
 Object code version is 3.11
@@ -25,7 +25,7 @@ Machine type is 16F84A
 
 
                 Name                               Link     Load   Length Selector   Space Scale
-C:\Users\Aymen\AppData\Local\Temp\s868.obj
+C:\Users\Aymen\AppData\Local\Temp\sk0.obj
                 end_init                              0        0        1        0       0
 dist/default/production\DeElectroniqueC.X.production.obj
                 cinit                               3FE      3FE        2      7FC       0

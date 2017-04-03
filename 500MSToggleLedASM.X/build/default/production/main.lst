@@ -1,0 +1,225 @@
+MPASM 5.71                          MAIN.ASM   4-3-2017  12:08:13         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001     #INCLUDE p16f84.inc
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : Nov 17 2016
+                      00005 ;  MPASM PIC16F84 processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2016 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+Message[301]: MESSAGE: (Processor-header file mismatch.  Verify selected processor.)
+                      00207         LIST
+                      00002     
+                      00003     #DEFINE LED PORTA,0
+                      00004     
+  0000000E            00005 COMPT EQU 0x0E
+                      00006     
+                      00007 BANK0 MACRO
+                      00008     BCF STATUS,RP0
+                      00009     ENDM
+                      00010     
+                      00011 BANK1 MACRO 
+                      00012     BSF STATUS,RP0
+                      00013     ENDM
+                      00014     
+                      00015     ORG 0x00
+0000   2???           00016     GOTO START
+                      00017     
+                      00018     ORG 0x04
+0004   2???           00019     GOTO INTERRUPTOR
+                      00020     
+                      00021 START ORG 0x05
+                      00022     BANK1
+0005   1683               M     BSF STATUS,RP0
+0006   30FE           00023     MOVLW 0xFE
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0007   0085           00024     MOVWF TRISA
+0008   3000           00025     MOVLW 0x00
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0009   0086           00026     MOVWF TRISB
+000A   30A0           00027     MOVLW 0xA0
+000B   008B           00028     MOVWF INTCON
+000C   30C8           00029     MOVLW  0xC8 ;B'11000100' ;c8
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+000D   0081           00030     MOVWF OPTION_REG
+                      00031     BANK0
+000E   1283               M     BCF STATUS,RP0
+000F   3083           00032     MOVLW .131
+0010   0081           00033     MOVWF TMR0
+0011   307D           00034     MOVLW .125
+0012   008E           00035     MOVWF COMPT
+0013   1005           00036     BCF LED
+0014   2???           00037     GOTO LOOP
+MPASM 5.71                          MAIN.ASM   4-3-2017  12:08:13         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00038     
+0015                  00039 LOOP
+0015   2???           00040     GOTO LOOP
+                      00041     
+0016                  00042 INTERRUPTOR
+0016   3083           00043     MOVLW .131
+0017   0081           00044     MOVWF TMR0
+0018   110B           00045     BCF INTCON,2
+Message[305]: Using default destination of 1 (file).
+0019   0B8E           00046     DECFSZ COMPT
+001A   0009           00047     RETFIE
+001B   1C05           00048     BTFSS LED
+001C   2???           00049     GOTO LED_ON
+001D   2???           00050     GOTO LED_OFF
+                      00051     
+001E                  00052 LED_ON
+001E   1405           00053     BSF LED
+001F   2???           00054     GOTO INIT_COMPT
+                      00055     
+0020                  00056 LED_OFF
+0020   1005           00057     BCF LED
+0021   2???           00058     GOTO INIT_COMPT
+                      00059     
+0022                  00060 INIT_COMPT
+0022   307D           00061     MOVLW .125
+0023   008E           00062     MOVWF COMPT
+0024   0009           00063     RETFIE
+                      00064 
+                      00065     END
+MPASM 5.71                          MAIN.ASM   4-3-2017  12:08:13         PAGE  3
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+BANK0                             
+BANK1                             
+C                                 00000000
+COMPT                             0000000E
+DC                                00000001
+EEADR                             00000009
+EECON1                            00000088
+EECON2                            00000089
+EEDATA                            00000008
+EEIE                              00000006
+EEIF                              00000004
+F                                 00000001
+FSR                               00000004
+GIE                               00000007
+INDF                              00000000
+INIT_COMPT                        00000022
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTERRUPTOR                       00000016
+INTF                              00000001
+IRP                               00000007
+LED                               PORTA,0
+LED_OFF                           00000020
+LED_ON                            0000001E
+LOOP                              00000015
+NOT_PD                            00000003
+NOT_RBPU                          00000007
+NOT_TO                            00000004
+OPTION_REG                        00000081
+PCL                               00000002
+PCLATH                            0000000A
+PORTA                             00000005
+PORTB                             00000006
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+MPASM 5.71                          MAIN.ASM   4-3-2017  12:08:13         PAGE  4
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RD                                00000000
+RP0                               00000005
+RP1                               00000006
+START                             00000005
+STATUS                            00000003
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+W                                 00000000
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+Z                                 00000002
+_CONFIG                           00002007
+_CP_OFF                           00003FFF
+_CP_ON                            0000000F
+_FOSC_EXTRC                       00003FFF
+_FOSC_HS                          00003FFE
+_FOSC_LP                          00003FFC
+_FOSC_XT                          00003FFD
+_HS_OSC                           00003FFE
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_LP_OSC                           00003FFC
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_WDTE_OFF                         00003FFB
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_XT_OSC                           00003FFD
+MPASM 5.71                          MAIN.ASM   4-3-2017  12:08:13         PAGE  5
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+__16F84A                          00000001
+
+Errors   :     0
+Warnings :     0 reported,     0 suppressed
+Messages :     5 reported,     0 suppressed
+
+

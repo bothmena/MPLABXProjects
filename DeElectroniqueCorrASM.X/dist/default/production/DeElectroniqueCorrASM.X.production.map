@@ -1,0 +1,48 @@
+MPLINK 5.08, LINKER
+Linker Map File - Created Mon Feb 20 11:38:43 2017
+
+                                 Section Info
+                  Section       Type    Address   Location Size(Bytes)
+                ---------  ---------  ---------  ---------  ---------
+                   .org_0       code   0x000000    program   0x000002
+                   .cinit    romdata   0x000001    program   0x000004
+                   .org_1       code   0x000005    program   0x00004a
+
+
+
+                              Program Memory Usage 
+                               Start         End      
+                           ---------   ---------      
+                            0x000000    0x000002      
+                            0x000005    0x000029      
+            40 out of 1094 program addresses used, program memory utilization is 3%
+
+
+
+                              Symbols - Sorted by Name
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                 AFFICHER   0x000021    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueCorrASM.X\main.asm
+                  ATTENTE   0x000012    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueCorrASM.X\main.asm
+                   BOUCLE   0x00000e    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueCorrASM.X\main.asm
+                     CAS1   0x00001c    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueCorrASM.X\main.asm
+                     CAS2   0x00001e    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueCorrASM.X\main.asm
+                    DELAI   0x000014    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueCorrASM.X\main.asm
+                INCREMENT   0x000017    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueCorrASM.X\main.asm
+                    START   0x000005    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueCorrASM.X\main.asm
+
+
+
+                              Symbols - Sorted by Address
+                     Name    Address   Location    Storage File                     
+                ---------  ---------  ---------  --------- ---------                
+                    START   0x000005    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueCorrASM.X\main.asm
+                   BOUCLE   0x00000e    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueCorrASM.X\main.asm
+                  ATTENTE   0x000012    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueCorrASM.X\main.asm
+                    DELAI   0x000014    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueCorrASM.X\main.asm
+                INCREMENT   0x000017    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueCorrASM.X\main.asm
+                     CAS1   0x00001c    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueCorrASM.X\main.asm
+                     CAS2   0x00001e    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueCorrASM.X\main.asm
+                 AFFICHER   0x000021    program     static C:\Users\Aymen\MPLABXProjects\DeElectroniqueCorrASM.X\main.asm
+
+
