@@ -1,0 +1,1318 @@
+
+
+HI-TECH Software PIC PRO Macro Assembler V9.82 build 9453 
+                                                                                               Fri Apr 28 08:00:42 2017
+
+HI-TECH Software Omniscient Code Generator (PRO mode) build 9453
+     1                           	processor	16F877A
+     2                           	opt	pw 120
+     3                           	opt	pm
+     4                           	psect	idataCOMMON,global,class=CODE,delta=2
+     5                           	psect	cinit,global,class=CODE,delta=2
+     6                           	psect	bssCOMMON,global,class=COMMON,space=1,delta=1
+     7                           	psect	dataCOMMON,global,class=COMMON,space=1,delta=1
+     8                           	psect	bssBANK0,global,class=BANK0,space=1,delta=1
+     9                           	psect	clrtext,global,class=CODE,delta=2
+    10                           	psect	cstackCOMMON,global,class=COMMON,space=1,delta=1
+    11                           	psect	cstackBANK0,global,class=BANK0,space=1,delta=1
+    12                           	psect	maintext,global,class=CODE,delta=2
+    13                           	psect	text145,local,class=CODE,delta=2
+    14                           	psect	intentry,global,class=CODE,delta=2
+    15                           	psect	text150,local,class=CODE,delta=2
+    16                           	psect	pa_nodes,global,class=CODE,delta=2
+    17                           	dabs	1,0x7E,2
+    18  000A                     
+    19                           	psect	idataCOMMON
+    20  0000                     __pidataCOMMON:	
+    21  000B                     _INTCON	set	11
+    22  0005                     _PORTA	set	5
+    23  0006                     _PORTB	set	6
+    24  0007                     _PORTC	set	7
+    25  0008                     _PORTD	set	8
+    26  0001                     _TMR0	set	1
+    27  005C                     _INTE	set	92
+    28  0059                     _INTF	set	89
+    29  0031                     _RB1	set	49
+    30  0032                     _RB2	set	50
+    31  0034                     _RB4	set	52
+    32  0035                     _RB5	set	53
+    33  0036                     _RB6	set	54
+    34  0037                     _RB7	set	55
+    35  0038                     _RC0	set	56
+    36  0039                     _RC1	set	57
+    37  003A                     _RC2	set	58
+    38  003B                     _RC3	set	59
+    39  003C                     _RC4	set	60
+    40  005D                     _TMR0IE	set	93
+    41  005A                     _TMR0IF	set	90
+    42  0081                     _OPTION_REG	set	129
+    43  0085                     _TRISA	set	133
+    44  0086                     _TRISB	set	134
+    45  0087                     _TRISC	set	135
+    46  0088                     _TRISD	set	136
+    47                           
+    48                           	psect	cinit
+    49  01BA                     start_initialization:	
+    50  01BA  3020               	movlw	low __pbssBANK0
+    51                           
+    52                           ; Clear objects allocated to COMMON
+    53  01BB  01F8               	clrf	__pbssCOMMON& (0+127)
+    54  01BC  01F9               	clrf	(__pbssCOMMON+1)& (0+127)
+    55  01BD  01FA               	clrf	(__pbssCOMMON+2)& (0+127)
+    56  01BE  01FB               	clrf	(__pbssCOMMON+3)& (0+127)
+    57                           
+    58                           ; Clear objects allocated to BANK0
+    59  01BF  1383               	bcf	3,7	;select IRP bank0
+    60  01C0  0084               	movwf	4
+    61  01C1  303E               	movlw	low (__pbssBANK0+30)
+    62  01C2  120A  118A  21DC   	fcall	clear_ram
+    63                           
+    64                           ;initializer for _minParticipation
+    65  01C5  30FF               	movlw	255
+    66  01C6  00FC               	movwf	__pdataCOMMON& (0+127)
+    67  01C7  00FD               	movwf	(__pdataCOMMON+1)& (0+127)
+    68  01C8                     end_of_initialization:	
+    69                           ;End of C runtime variable initialization code
+    70                           
+    71  01C8  0183               	clrf	3
+    72  01C9  120A  118A  29CC   	ljmp	_main	;jump to C main() function
+    73                           
+    74                           	psect	bssCOMMON
+    75  0078                     __pbssCOMMON:	
+    76  0078                     _compt:	
+    77  0078                     	ds	2
+    78  007A                     _countDown:	
+    79  007A                     	ds	2
+    80                           
+    81                           	psect	dataCOMMON
+    82  007C                     __pdataCOMMON:	
+    83  007C                     _minParticipation:	
+    84  007C                     	ds	2
+    85                           
+    86                           	psect	bssBANK0
+    87  0020                     __pbssBANK0:	
+    88  0020                     _participations:	
+    89  0020                     	ds	30
+    90                           
+    91                           	psect	clrtext
+    92  01DC                     clear_ram:	
+    93                           ;	Called with FSR containing the base address, and
+    94                           ;	W with the last address+1
+    95                           
+    96  01DC  0064               	clrwdt	;clear the watchdog before getting into this loop
+    97  01DD                     clrloop:	
+    98  01DD  0180               	clrf	0	;clear RAM location pointed to by FSR
+    99  01DE  0A84               	incf	4,f	;increment pointer
+   100  01DF  0604               	xorwf	4,w	;XOR with final address
+   101  01E0  1903               	btfsc	3,2	;have we reached the end yet?
+   102  01E1  3400               	retlw	0	;all done for this memory range, return
+   103  01E2  0604               	xorwf	4,w	;XOR again to restore value
+   104  01E3  29DD               	goto	clrloop	;do the next byte
+   105                           
+   106                           	psect	cstackCOMMON
+   107  0070                     __pcstackCOMMON:	
+   108  0070                     ?_affichage:	
+   109  0070                     ?_updateMinParticiations:	
+   110                           ; 0 bytes @ 0x0
+   111                           
+   112  0070                     ?_selectParticipant:	
+   113                           ; 0 bytes @ 0x0
+   114                           
+   115  0070                     ?_setMinParticiations:	
+   116                           ; 0 bytes @ 0x0
+   117                           
+   118  0070                     ?_main:	
+   119                           ; 0 bytes @ 0x0
+   120                           
+   121  0070                     ?_interruption:	
+   122                           ; 0 bytes @ 0x0
+   123                           
+   124  0070                     setMinParticiations@value:	
+   125                           ; 0 bytes @ 0x0
+   126                           
+   127  0070                     affichage@valeur:	
+   128                           ; 2 bytes @ 0x0
+   129                           
+   130                           
+   131                           ; 2 bytes @ 0x0
+   132  0070                     	ds	2
+   133  0072                     ??_affichage:	
+   134  0072                     ??_setMinParticiations:	
+   135                           ; 0 bytes @ 0x2
+   136                           
+   137  0072                     affichage@i:	
+   138                           ; 0 bytes @ 0x2
+   139                           
+   140                           
+   141                           ; 2 bytes @ 0x2
+   142  0072                     	ds	1
+   143  0073                     ??_updateMinParticiations:	
+   144                           
+   145                           ; 0 bytes @ 0x3
+   146  0073                     	ds	1
+   147  0074                     ??_selectParticipant:	
+   148  0074                     ??_interruption:	
+   149                           ; 0 bytes @ 0x4
+   150                           
+   151                           
+   152                           ; 0 bytes @ 0x4
+   153  0074                     	ds	4
+   154                           
+   155                           	psect	cstackBANK0
+   156  0000                     __pcstackBANK0:	
+   157  0000                     ??_main:	
+   158                           
+   159                           	psect	maintext
+   160  01CC                     __pmaintext:	
+   161                           ; 0 bytes @ 0x0
+   162 ;;Data sizes: Strings 0, constant 0, data 2, bss 34, persistent 0 stack 0
+   163 ;;Auto spaces:   Size  Autos    Used
+   164 ;; COMMON          14      8      14
+   165 ;; BANK0           80      0      30
+   166 ;; BANK1           80      0       0
+   167 ;; BANK3           96      0       0
+   168 ;; BANK2           96      0       0
+   169 ;;
+   170 ;; Pointer list with targets:
+   171 ;;
+   172 ;; Critical Paths under _main in COMMON
+   173 ;;
+   174 ;;   None.
+   175 ;;
+   176 ;; Critical Paths under _interruption in COMMON
+   177 ;;
+   178 ;;   _interruption->_affichage
+   179 ;;   _selectParticipant->_affichage
+   180 ;;   _updateMinParticiations->_setMinParticiations
+   181 ;;
+   182 ;; Critical Paths under _main in BANK0
+   183 ;;
+   184 ;;   None.
+   185 ;;
+   186 ;; Critical Paths under _interruption in BANK0
+   187 ;;
+   188 ;;   None.
+   189 ;;
+   190 ;; Critical Paths under _main in BANK1
+   191 ;;
+   192 ;;   None.
+   193 ;;
+   194 ;; Critical Paths under _interruption in BANK1
+   195 ;;
+   196 ;;   None.
+   197 ;;
+   198 ;; Critical Paths under _main in BANK3
+   199 ;;
+   200 ;;   None.
+   201 ;;
+   202 ;; Critical Paths under _interruption in BANK3
+   203 ;;
+   204 ;;   None.
+   205 ;;
+   206 ;; Critical Paths under _main in BANK2
+   207 ;;
+   208 ;;   None.
+   209 ;;
+   210 ;; Critical Paths under _interruption in BANK2
+   211 ;;
+   212 ;;   None.
+   213 ;;
+   214 ;;Main: autosize = 0, tempsize = 0, incstack = 0, save=0
+   215 ;;
+   216 ;;
+   217 ;;Call Graph Tables:
+   218 ;;
+   219 ;; ---------------------------------------------------------------------------------
+   220 ;; (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
+   221 ;; ---------------------------------------------------------------------------------
+   222 ;; (0) _main                                                 0     0      0       0
+   223 ;; ---------------------------------------------------------------------------------
+   224 ;; Estimated maximum stack depth 0
+   225 ;; ---------------------------------------------------------------------------------
+   226 ;; (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
+   227 ;; ---------------------------------------------------------------------------------
+   228 ;; (1) _interruption                                         4     4      0     165
+   229 ;;                                              4 COMMON     4     4      0
+   230 ;;                          _affichage
+   231 ;;             _updateMinParticiations
+   232 ;;                  _selectParticipant
+   233 ;; ---------------------------------------------------------------------------------
+   234 ;; (2) _selectParticipant                                    0     0      0      60
+   235 ;;                          _affichage
+   236 ;; ---------------------------------------------------------------------------------
+   237 ;; (2) _updateMinParticiations                               0     0      0      45
+   238 ;;                _setMinParticiations
+   239 ;; ---------------------------------------------------------------------------------
+   240 ;; (3) _setMinParticiations                                  3     1      2      45
+   241 ;;                                              0 COMMON     3     1      2
+   242 ;; ---------------------------------------------------------------------------------
+   243 ;; (3) _affichage                                            4     2      2      60
+   244 ;;                                              0 COMMON     4     2      2
+   245 ;; ---------------------------------------------------------------------------------
+   246 ;; Estimated maximum stack depth 3
+   247 ;; ---------------------------------------------------------------------------------
+   248 ;; Call Graph Graphs:
+   249 ;; _main (ROOT)
+   250 ;;
+   251 ;; _interruption (ROOT)
+   252 ;;   _affichage
+   253 ;;   _updateMinParticiations
+   254 ;;     _setMinParticiations
+   255 ;;   _selectParticipant
+   256 ;;     _affichage
+   257 ;;
+   258 ;; Address spaces:
+   259 ;;Name               Size   Autos  Total    Cost      Usage
+   260 ;;BANK3               60      0       0       9        0.0%
+   261 ;;BITBANK3            60      0       0       8        0.0%
+   262 ;;SFR3                 0      0       0       4        0.0%
+   263 ;;BITSFR3              0      0       0       4        0.0%
+   264 ;;BANK2               60      0       0      11        0.0%
+   265 ;;BITBANK2            60      0       0      10        0.0%
+   266 ;;SFR2                 0      0       0       5        0.0%
+   267 ;;BITSFR2              0      0       0       5        0.0%
+   268 ;;SFR1                 0      0       0       2        0.0%
+   269 ;;BITSFR1              0      0       0       2        0.0%
+   270 ;;BANK1               50      0       0       7        0.0%
+   271 ;;BITBANK1            50      0       0       6        0.0%
+   272 ;;CODE                 0      0       0       0        0.0%
+   273 ;;DATA                 0      0      32      12        0.0%
+   274 ;;ABS                  0      0      2C       3        0.0%
+   275 ;;NULL                 0      0       0       0        0.0%
+   276 ;;STACK                0      0       6       2        0.0%
+   277 ;;BANK0               50      0      1E       5       37.5%
+   278 ;;BITBANK0            50      0       0       4        0.0%
+   279 ;;SFR0                 0      0       0       1        0.0%
+   280 ;;BITSFR0              0      0       0       1        0.0%
+   281 ;;COMMON               E      8       E       1      100.0%
+   282 ;;BITCOMMON            E      0       0       0        0.0%
+   283 ;;EEDATA             100      0       0       0        0.0%
+   284                           
+   285                           
+   286 ;; *************** function _main *****************
+   287 ;; Defined at:
+   288 ;;		line 22 in file "main.c"
+   289 ;; Parameters:    Size  Location     Type
+   290 ;;		None
+   291 ;; Auto vars:     Size  Location     Type
+   292 ;;		None
+   293 ;; Return value:  Size  Location     Type
+   294 ;;		None               void
+   295 ;; Registers used:
+   296 ;;		wreg, status,2
+   297 ;; Tracked objects:
+   298 ;;		On entry : 17F/0
+   299 ;;		On exit  : 17F/0
+   300 ;;		Unchanged: FFE80/0
+   301 ;; Data sizes:     COMMON   BANK0   BANK1   BANK3   BANK2
+   302 ;;      Params:         0       0       0       0       0
+   303 ;;      Locals:         0       0       0       0       0
+   304 ;;      Temps:          0       0       0       0       0
+   305 ;;      Totals:         0       0       0       0       0
+   306 ;;Total ram usage:        0 bytes
+   307 ;; Hardware stack levels required when called:    3
+   308 ;; This function calls:
+   309 ;;		Nothing
+   310 ;; This function is called by:
+   311 ;;		Startup code after reset
+   312 ;; This function uses a non-reentrant model
+   313 ;;
+   314  01CC                     _main:	
+   315                           
+   316                           ;main.c: 24: TRISA = 0x00;
+   317                           
+   318                           ; Regs used in _main: [wreg+status,2]
+   319  01CC  1683               	bsf	3,5	;RP0=1, select bank1
+   320  01CD  0185               	clrf	5	;volatile
+   321                           
+   322                           ;main.c: 25: TRISB = 0x01;
+   323  01CE  3001               	movlw	1
+   324  01CF  0086               	movwf	6	;volatile
+   325                           
+   326                           ;main.c: 26: TRISC = 0xFF;
+   327  01D0  30FF               	movlw	255
+   328  01D1  0087               	movwf	7	;volatile
+   329                           
+   330                           ;main.c: 27: TRISD = 0xFF;
+   331  01D2  0088               	movwf	8	;volatile
+   332                           
+   333                           ;main.c: 29: PORTA = 0x00;
+   334  01D3  1283               	bcf	3,5	;RP0=0, select bank0
+   335  01D4  0185               	clrf	5	;volatile
+   336                           
+   337                           ;main.c: 30: PORTB = 0x04;
+   338  01D5  3004               	movlw	4
+   339  01D6  0086               	movwf	6	;volatile
+   340                           
+   341                           ;main.c: 31: PORTC = 0x00;
+   342  01D7  0187               	clrf	7	;volatile
+   343                           
+   344                           ;main.c: 32: PORTD = 0x00;
+   345  01D8  0188               	clrf	8	;volatile
+   346                           
+   347                           ;main.c: 34: INTCON = 0x90;
+   348  01D9  3090               	movlw	144
+   349  01DA  008B               	movwf	11	;volatile
+   350  01DB                     l702:	
+   351  01DB  29DB               	goto	l702
+   352  01DC                     __end_of_main:	
+   353                           
+   354                           	psect	text145
+   355  0015                     __ptext145:	
+   356 ;; =============== function _main ends ============
+   357                           
+   358                           
+   359 ;; *************** function _interruption *****************
+   360 ;; Defined at:
+   361 ;;		line 41 in file "main.c"
+   362 ;; Parameters:    Size  Location     Type
+   363 ;;		None
+   364 ;; Auto vars:     Size  Location     Type
+   365 ;;		None
+   366 ;; Return value:  Size  Location     Type
+   367 ;;		None               void
+   368 ;; Registers used:
+   369 ;;		wreg, fsr0l, fsr0h, fsr1l, fsr1h, status,2, status,0, btemp+1, pclath, cstack
+   370 ;; Tracked objects:
+   371 ;;		On entry : 0/0
+   372 ;;		On exit  : 60/0
+   373 ;;		Unchanged: FFE00/0
+   374 ;; Data sizes:     COMMON   BANK0   BANK1   BANK3   BANK2
+   375 ;;      Params:         0       0       0       0       0
+   376 ;;      Locals:         0       0       0       0       0
+   377 ;;      Temps:          4       0       0       0       0
+   378 ;;      Totals:         4       0       0       0       0
+   379 ;;Total ram usage:        4 bytes
+   380 ;; Hardware stack levels used:    1
+   381 ;; Hardware stack levels required when called:    2
+   382 ;; This function calls:
+   383 ;;		_affichage
+   384 ;;		_updateMinParticiations
+   385 ;;		_selectParticipant
+   386 ;; This function is called by:
+   387 ;;		Interrupt level 1
+   388 ;; This function uses a non-reentrant model
+   389 ;;
+   390  0015                     _interruption:	
+   391                           
+   392                           ;main.c: 43: if ( INTF ) {
+   393  0015  1C8B               	btfss	11,1
+   394  0016  282E               	goto	i1l707
+   395  0017  3083               	movlw	131
+   396                           
+   397                           ;main.c: 45: INTF = 0;
+   398  0018  108B               	bcf	11,1
+   399                           
+   400                           ;main.c: 46: RB1 = 1;
+   401  0019  1486               	bsf	6,1
+   402                           
+   403                           ;main.c: 47: RB2 = 0;
+   404  001A  1106               	bcf	6,2
+   405                           
+   406                           ;main.c: 48: INTE = 0;
+   407  001B  120B               	bcf	11,4
+   408                           
+   409                           ;main.c: 49: TMR0IE = 1;
+   410  001C  168B               	bsf	11,5
+   411                           
+   412                           ;main.c: 50: TMR0 = 131;
+   413  001D  0081               	movwf	1	;volatile
+   414                           
+   415                           ;main.c: 51: OPTION_REG = 0xD2;
+   416  001E  30D2               	movlw	210
+   417  001F  1683               	bsf	3,5	;RP0=1, select bank1
+   418  0020  0081               	movwf	1	;volatile
+   419  0021  3003               	movlw	3
+   420                           
+   421                           ;main.c: 52: compt = 0;
+   422  0022  01F8               	clrf	_compt
+   423  0023  01F9               	clrf	_compt+1
+   424                           
+   425                           ;main.c: 53: countDown = 3;
+   426  0024  00FA               	movwf	_countDown
+   427  0025  01FB               	clrf	_countDown+1
+   428                           
+   429                           ;main.c: 54: affichage(countDown);
+   430  0026  087B               	movf	_countDown+1,w
+   431  0027  00F1               	movwf	?_affichage+1
+   432  0028  087A               	movf	_countDown,w
+   433  0029  00F0               	movwf	?_affichage
+   434  002A  20D1  120A  118A   	fcall	_affichage
+   435                           
+   436                           ;main.c: 55: }
+   437  002D  2853               	goto	i1l711
+   438  002E                     i1l707:	
+   439                           
+   440                           ;main.c: 56: else {
+   441                           ;main.c: 58: TMR0IF = 0;
+   442  002E  110B               	bcf	11,2
+   443                           
+   444                           ;main.c: 59: compt++;
+   445  002F  0AF8               	incf	_compt,f
+   446  0030  1903               	skipnz
+   447  0031  0AF9               	incf	_compt+1,f
+   448                           
+   449                           ;main.c: 60: if ( compt == 125 ) {
+   450  0032  0878               	movf	_compt,w
+   451  0033  3A7D               	xorlw	125
+   452  0034  0479               	iorwf	_compt+1,w
+   453  0035  1D03               	skipz
+   454  0036  2853               	goto	i1l711
+   455  0037  30FF               	movlw	-1
+   456                           
+   457                           ;main.c: 61: compt = 0;
+   458  0038  01F8               	clrf	_compt
+   459  0039  01F9               	clrf	_compt+1
+   460                           
+   461                           ;main.c: 62: countDown--;
+   462  003A  07FA               	addwf	_countDown,f
+   463  003B  1C03               	skipc
+   464  003C  03FB               	decf	_countDown+1,f
+   465                           
+   466                           ;main.c: 63: affichage(countDown);
+   467  003D  087B               	movf	_countDown+1,w
+   468  003E  00F1               	movwf	?_affichage+1
+   469  003F  087A               	movf	_countDown,w
+   470  0040  00F0               	movwf	?_affichage
+   471  0041  20D1  120A  118A   	fcall	_affichage
+   472                           
+   473                           ;main.c: 64: if ( countDown == 0 ) {
+   474  0044  087B               	movf	_countDown+1,w
+   475  0045  047A               	iorwf	_countDown,w
+   476  0046  1D03               	skipz
+   477  0047  2853               	goto	i1l711
+   478  0048  21B7               	call	PL2	;select bank 0
+   479                           
+   480                           ;main.c: 65: RB1 = 0;
+   481  0049  1086               	bcf	6,1
+   482                           
+   483                           ;main.c: 66: RB2 = 1;
+   484  004A  1506               	bsf	6,2
+   485                           
+   486                           ;main.c: 67: updateMinParticiations();
+   487  004B  216E  120A  118A   	fcall	_updateMinParticiations
+   488                           
+   489                           ;main.c: 68: selectParticipant();
+   490  004E  205F  120A  118A   	fcall	_selectParticipant
+   491                           
+   492                           ;main.c: 69: TMR0IE = 0;
+   493  0051  128B               	bcf	11,5
+   494                           
+   495                           ;main.c: 70: INTE = 1;
+   496  0052  160B               	bsf	11,4
+   497  0053                     i1l711:	
+   498  0053  0877               	movf	??_interruption+3,w
+   499  0054  21B7               	call	PL2	;select bank 0
+   500  0055  00FF               	movwf	127
+   501  0056  0876               	movf	??_interruption+2,w
+   502  0057  008A               	movwf	10
+   503  0058  0875               	movf	??_interruption+1,w
+   504  0059  0084               	movwf	4
+   505  005A  0E74               	swapf	??_interruption^(0+-128),w
+   506  005B  0083               	movwf	3
+   507  005C  0EFE               	swapf	126,f
+   508  005D  0E7E               	swapf	126,w
+   509  005E  0009               	retfie
+   510  005F                     __end_of_interruption:	
+   511  005F                     __ptext146:	
+   512 ;; =============== function _interruption ends ============
+   513                           
+   514                           
+   515 ;; *************** function _selectParticipant *****************
+   516 ;; Defined at:
+   517 ;;		line 114 in file "main.c"
+   518 ;; Parameters:    Size  Location     Type
+   519 ;;		None
+   520 ;; Auto vars:     Size  Location     Type
+   521 ;;		None
+   522 ;; Return value:  Size  Location     Type
+   523 ;;		None               void
+   524 ;; Registers used:
+   525 ;;		wreg, fsr0l, fsr0h, status,2, status,0, btemp+1, pclath, cstack
+   526 ;; Tracked objects:
+   527 ;;		On entry : 0/0
+   528 ;;		On exit  : 0/0
+   529 ;;		Unchanged: FFE00/0
+   530 ;; Data sizes:     COMMON   BANK0   BANK1   BANK3   BANK2
+   531 ;;      Params:         0       0       0       0       0
+   532 ;;      Locals:         0       0       0       0       0
+   533 ;;      Temps:          0       0       0       0       0
+   534 ;;      Totals:         0       0       0       0       0
+   535 ;;Total ram usage:        0 bytes
+   536 ;; Hardware stack levels used:    1
+   537 ;; Hardware stack levels required when called:    1
+   538 ;; This function calls:
+   539 ;;		_affichage
+   540 ;; This function is called by:
+   541 ;;		_interruption
+   542 ;; This function uses a non-reentrant model
+   543 ;;
+   544  005F                     _selectParticipant:	
+   545                           
+   546                           ;main.c: 116: if ( minParticipation == -1 )
+   547                           
+   548                           ; Regs used in _selectParticipant: [wreg-fsr0h+status,2+status,0+btemp+1+pclath+cstack]
+   549  005F  0A7C               	incf	_minParticipation,w
+   550  0060  1903               	skipnz
+   551  0061  0A7D               	incf	_minParticipation+1,w
+   552  0062  1D03               	skipz
+   553  0063  2867               	goto	i1l722
+   554                           
+   555                           ;main.c: 117: affichage( 0 );
+   556  0064  01F0               	clrf	?_affichage
+   557  0065  01F1               	clrf	?_affichage+1
+   558  0066  28D1               	ljmp	i1l1855
+   559  0067                     i1l722:	
+   560  0067  21B7               	call	PL2	;select bank 0
+   561                           
+   562                           ;main.c: 118: else if ( RC0 && participations[0] == minParticipation ) {
+   563  0068  1C07               	btfss	7,0
+   564  0069  287D               	goto	i1l724
+   565  006A  087D               	movf	_minParticipation+1,w
+   566  006B  0621               	xorwf	_participations+1,w
+   567  006C  1D03               	skipz
+   568  006D  2870               	goto	u12_25
+   569  006E  087C               	movf	_minParticipation,w
+   570  006F  0620               	xorwf	_participations,w
+   571  0070                     u12_25:	
+   572  0070  1D03               	skipz
+   573  0071  287D               	goto	i1l724
+   574                           
+   575                           ;main.c: 119: affichage( 1 );
+   576  0072  01F0               	clrf	?_affichage
+   577  0073  0AF0               	incf	?_affichage,f
+   578  0074  01F1               	clrf	?_affichage+1
+   579  0075  20D1  120A  118A   	fcall	_affichage
+   580  0078  21B7               	call	PL2	;select bank 0
+   581                           
+   582                           ;main.c: 120: participations[0]++;
+   583  0079  0AA0               	incf	_participations,f
+   584  007A  1903               	skipnz
+   585  007B  0AA1               	incf	_participations+1,f
+   586                           
+   587                           ;main.c: 121: }
+   588  007C  0008               	return
+   589  007D                     i1l724:	
+   590                           
+   591                           ;main.c: 122: else if ( RC1 && participations[1] == minParticipation ) {
+   592  007D  1C87               	btfss	7,1
+   593  007E  2892               	goto	i1l726
+   594  007F  087D               	movf	_minParticipation+1,w
+   595  0080  0623               	xorwf	_participations+3,w
+   596  0081  1D03               	skipz
+   597  0082  2885               	goto	u14_25
+   598  0083  087C               	movf	_minParticipation,w
+   599  0084  0622               	xorwf	_participations+2,w
+   600  0085                     u14_25:	
+   601  0085  1D03               	skipz
+   602  0086  2892               	goto	i1l726
+   603                           
+   604                           ;main.c: 123: affichage( 2 );
+   605  0087  3002               	movlw	2
+   606  0088  00F0               	movwf	?_affichage
+   607  0089  01F1               	clrf	?_affichage+1
+   608  008A  20D1  120A  118A   	fcall	_affichage
+   609  008D  21B7               	call	PL2	;select bank 0
+   610                           
+   611                           ;main.c: 124: participations[1]++;
+   612  008E  0AA2               	incf	_participations+2,f
+   613  008F  1903               	skipnz
+   614  0090  0AA3               	incf	_participations+3,f
+   615                           
+   616                           ;main.c: 125: }
+   617  0091  0008               	return
+   618  0092                     i1l726:	
+   619                           
+   620                           ;main.c: 126: else if ( RC2 && participations[2] == minParticipation ) {
+   621  0092  1D07               	btfss	7,2
+   622  0093  28A7               	goto	i1l728
+   623  0094  087D               	movf	_minParticipation+1,w
+   624  0095  0625               	xorwf	_participations+5,w
+   625  0096  1D03               	skipz
+   626  0097  289A               	goto	u16_25
+   627  0098  087C               	movf	_minParticipation,w
+   628  0099  0624               	xorwf	_participations+4,w
+   629  009A                     u16_25:	
+   630  009A  1D03               	skipz
+   631  009B  28A7               	goto	i1l728
+   632                           
+   633                           ;main.c: 127: affichage( 3 );
+   634  009C  3003               	movlw	3
+   635  009D  00F0               	movwf	?_affichage
+   636  009E  01F1               	clrf	?_affichage+1
+   637  009F  20D1  120A  118A   	fcall	_affichage
+   638  00A2  21B7               	call	PL2	;select bank 0
+   639                           
+   640                           ;main.c: 128: participations[2]++;
+   641  00A3  0AA4               	incf	_participations+4,f
+   642  00A4  1903               	skipnz
+   643  00A5  0AA5               	incf	_participations+5,f
+   644                           
+   645                           ;main.c: 129: }
+   646  00A6  0008               	return
+   647  00A7                     i1l728:	
+   648                           
+   649                           ;main.c: 130: else if ( RC3 && participations[3] == minParticipation ) {
+   650  00A7  1D87               	btfss	7,3
+   651  00A8  28BC               	goto	i1l730
+   652  00A9  087D               	movf	_minParticipation+1,w
+   653  00AA  0627               	xorwf	_participations+7,w
+   654  00AB  1D03               	skipz
+   655  00AC  28AF               	goto	u18_25
+   656  00AD  087C               	movf	_minParticipation,w
+   657  00AE  0626               	xorwf	_participations+6,w
+   658  00AF                     u18_25:	
+   659  00AF  1D03               	skipz
+   660  00B0  28BC               	goto	i1l730
+   661                           
+   662                           ;main.c: 131: affichage( 4 );
+   663  00B1  3004               	movlw	4
+   664  00B2  00F0               	movwf	?_affichage
+   665  00B3  01F1               	clrf	?_affichage+1
+   666  00B4  20D1  120A  118A   	fcall	_affichage
+   667  00B7  21B7               	call	PL2	;select bank 0
+   668                           
+   669                           ;main.c: 132: participations[3]++;
+   670  00B8  0AA6               	incf	_participations+6,f
+   671  00B9  1903               	skipnz
+   672  00BA  0AA7               	incf	_participations+7,f
+   673                           
+   674                           ;main.c: 133: }
+   675  00BB  0008               	return
+   676  00BC                     i1l730:	
+   677                           
+   678                           ;main.c: 134: else if ( RC4 && participations[4] == minParticipation ) {
+   679  00BC  1E07               	btfss	7,4
+   680  00BD  0008               	return
+   681  00BE  087D               	movf	_minParticipation+1,w
+   682  00BF  0629               	xorwf	_participations+9,w
+   683  00C0  1D03               	skipz
+   684  00C1  28C4               	goto	u20_25
+   685  00C2  087C               	movf	_minParticipation,w
+   686  00C3  0628               	xorwf	_participations+8,w
+   687  00C4                     u20_25:	
+   688  00C4  1D03               	skipz
+   689  00C5  0008               	return
+   690                           
+   691                           ;main.c: 135: affichage( 5 );
+   692  00C6  3005               	movlw	5
+   693  00C7  00F0               	movwf	?_affichage
+   694  00C8  01F1               	clrf	?_affichage+1
+   695  00C9  20D1  120A  118A   	fcall	_affichage
+   696  00CC  21B7               	call	PL2	;select bank 0
+   697                           
+   698                           ;main.c: 136: participations[4]++;
+   699  00CD  0AA8               	incf	_participations+8,f
+   700  00CE  1903               	skipnz
+   701  00CF  0AA9               	incf	_participations+9,f
+   702  00D0  0008               	return
+   703  00D1                     __end_of_selectParticipant:	
+   704  00D1                     __ptext149:	
+   705 ;; =============== function _setMinParticiations ends ============
+   706                           
+   707                           
+   708 ;; *************** function _affichage *****************
+   709 ;; Defined at:
+   710 ;;		line 190 in file "main.c"
+   711 ;; Parameters:    Size  Location     Type
+   712 ;;  valeur          2    0[COMMON] int 
+   713 ;; Auto vars:     Size  Location     Type
+   714 ;;  i               2    2[COMMON] int 
+   715 ;; Return value:  Size  Location     Type
+   716 ;;		None               void
+   717 ;; Registers used:
+   718 ;;		wreg, fsr0l, fsr0h, status,2, status,0, btemp+1
+   719 ;; Tracked objects:
+   720 ;;		On entry : 0/20
+   721 ;;		On exit  : 0/0
+   722 ;;		Unchanged: FFE00/0
+   723 ;; Data sizes:     COMMON   BANK0   BANK1   BANK3   BANK2
+   724 ;;      Params:         2       0       0       0       0
+   725 ;;      Locals:         2       0       0       0       0
+   726 ;;      Temps:          0       0       0       0       0
+   727 ;;      Totals:         4       0       0       0       0
+   728 ;;Total ram usage:        4 bytes
+   729 ;; Hardware stack levels used:    1
+   730 ;; This function calls:
+   731 ;;		Nothing
+   732 ;; This function is called by:
+   733 ;;		_interruption
+   734 ;;		_selectParticipant
+   735 ;; This function uses a non-reentrant model
+   736 ;;
+   737  00D1                     _affichage:	
+   738  00D1                     i1l1855:	
+   739                           ; Regs used in _affichage: [wreg-fsr0h+status,2+status,0+btemp+1]
+   740                           
+   741                           
+   742                           ;main.c: 192: switch ( valeur ) {
+   743  00D1  291C               	goto	i1l2019
+   744  00D2                     i1l1857:	
+   745  00D2  21B7               	call	PL2	;select bank 0
+   746                           
+   747                           ;main.c: 195: PORTA = 0x00;
+   748  00D3  0185               	clrf	5	;volatile
+   749  00D4                     i1l1859:	
+   750                           
+   751                           ;main.c: 196: RB4 = 0;
+   752  00D4  1206               	bcf	6,4
+   753  00D5                     i1l1861:	
+   754                           
+   755                           ;main.c: 197: RB5 = 0;
+   756  00D5  1286               	bcf	6,5
+   757  00D6                     i1l1863:	
+   758                           
+   759                           ;main.c: 198: RB6 = 0;
+   760  00D6  1306               	bcf	6,6
+   761  00D7                     i1l1865:	
+   762                           
+   763                           ;main.c: 199: RB7 = 0;
+   764  00D7  1386               	bcf	6,7
+   765                           
+   766                           ;main.c: 200: break;
+   767  00D8  2953               	goto	i1l2021
+   768  00D9                     i1l1867:	
+   769  00D9  21B7               	call	PL2	;select bank 0
+   770                           
+   771                           ;main.c: 202: PORTA = 0x00;
+   772  00DA  0185               	clrf	5	;volatile
+   773  00DB                     i1l1869:	
+   774                           
+   775                           ;main.c: 203: RB4 = 1;
+   776  00DB  1606               	bsf	6,4
+   777  00DC  28D5               	goto	i1l1861
+   778  00DD                     i1l1877:	
+   779  00DD  21B7               	call	PL2	;select bank 0
+   780                           
+   781                           ;main.c: 209: PORTA = 0x00;
+   782  00DE  0185               	clrf	5	;volatile
+   783  00DF                     i1l1879:	
+   784                           
+   785                           ;main.c: 210: RB4 = 0;
+   786  00DF  1206               	bcf	6,4
+   787  00E0                     i1l1881:	
+   788                           
+   789                           ;main.c: 211: RB5 = 1;
+   790  00E0  1686               	bsf	6,5
+   791  00E1  28D6               	goto	i1l1863
+   792  00E2                     i1l1887:	
+   793  00E2  21B7               	call	PL2	;select bank 0
+   794                           
+   795                           ;main.c: 216: PORTA = 0x00;
+   796  00E3  0185               	clrf	5	;volatile
+   797  00E4                     i1l1889:	
+   798                           
+   799                           ;main.c: 217: RB4 = 1;
+   800  00E4  1606               	bsf	6,4
+   801  00E5  28E0               	goto	i1l1881
+   802  00E6                     i1l1897:	
+   803  00E6  21B7               	call	PL2	;select bank 0
+   804                           
+   805                           ;main.c: 223: PORTA = 0x00;
+   806  00E7  0185               	clrf	5	;volatile
+   807  00E8                     i1l1899:	
+   808                           
+   809                           ;main.c: 224: RB4 = 0;
+   810  00E8  1206               	bcf	6,4
+   811  00E9                     i1l1901:	
+   812                           
+   813                           ;main.c: 225: RB5 = 0;
+   814  00E9  1286               	bcf	6,5
+   815  00EA                     i1l1903:	
+   816                           
+   817                           ;main.c: 226: RB6 = 1;
+   818  00EA  1706               	bsf	6,6
+   819  00EB  28D7               	goto	i1l1865
+   820  00EC                     i1l1907:	
+   821  00EC  21B7               	call	PL2	;select bank 0
+   822                           
+   823                           ;main.c: 230: PORTA = 0x00;
+   824  00ED  0185               	clrf	5	;volatile
+   825  00EE                     i1l1909:	
+   826                           
+   827                           ;main.c: 231: RB4 = 1;
+   828  00EE  1606               	bsf	6,4
+   829  00EF  28E9               	goto	i1l1901
+   830  00F0                     i1l1917:	
+   831  00F0  21B7               	call	PL2	;select bank 0
+   832                           
+   833                           ;main.c: 237: PORTA = 0x00;
+   834  00F1  0185               	clrf	5	;volatile
+   835                           
+   836                           ;main.c: 238: RB4 = 0;
+   837  00F2  1206               	bcf	6,4
+   838  00F3                     i1l1921:	
+   839                           
+   840                           ;main.c: 239: RB5 = 1;
+   841  00F3  1686               	bsf	6,5
+   842  00F4  28EA               	goto	i1l1903
+   843  00F5                     i1l1927:	
+   844  00F5  21B7               	call	PL2	;select bank 0
+   845                           
+   846                           ;main.c: 244: PORTA = 0x00;
+   847  00F6  0185               	clrf	5	;volatile
+   848                           
+   849                           ;main.c: 245: RB4 = 1;
+   850  00F7  1606               	bsf	6,4
+   851  00F8  28F3               	goto	i1l1921
+   852  00F9                     i1l1937:	
+   853  00F9  21B7               	call	PL2	;select bank 0
+   854                           
+   855                           ;main.c: 251: PORTA = 0x00;
+   856  00FA  0185               	clrf	5	;volatile
+   857                           
+   858                           ;main.c: 252: RB4 = 0;
+   859  00FB  1206               	bcf	6,4
+   860  00FC                     i1l1941:	
+   861                           
+   862                           ;main.c: 253: RB5 = 0;
+   863  00FC  1286               	bcf	6,5
+   864                           
+   865                           ;main.c: 254: RB6 = 0;
+   866  00FD  1306               	bcf	6,6
+   867                           
+   868                           ;main.c: 255: RB7 = 1;
+   869  00FE  1786               	bsf	6,7
+   870                           
+   871                           ;main.c: 256: break;
+   872  00FF  2953               	goto	i1l2021
+   873  0100                     i1l1947:	
+   874  0100  21B7               	call	PL2	;select bank 0
+   875                           
+   876                           ;main.c: 258: PORTA = 0x00;
+   877  0101  0185               	clrf	5	;volatile
+   878                           
+   879                           ;main.c: 259: RB4 = 1;
+   880  0102  1606               	bsf	6,4
+   881  0103  28FC               	goto	i1l1941
+   882  0104                     i1l1957:	
+   883                           
+   884                           ;main.c: 265: PORTA = 0x01;
+   885  0104  3001               	movlw	1
+   886  0105  21B7               	call	PL2	;select bank 0
+   887  0106  0085               	movwf	5	;volatile
+   888  0107  28D4               	goto	i1l1859
+   889  0108                     i1l1967:	
+   890                           
+   891                           ;main.c: 272: PORTA = 0x01;
+   892  0108  3001               	movlw	1
+   893  0109  21B7               	call	PL2	;select bank 0
+   894  010A  0085               	movwf	5	;volatile
+   895  010B  28DB               	goto	i1l1869
+   896  010C                     i1l1977:	
+   897                           
+   898                           ;main.c: 279: PORTA = 0x01;
+   899  010C  3001               	movlw	1
+   900  010D  21B7               	call	PL2	;select bank 0
+   901  010E  0085               	movwf	5	;volatile
+   902  010F  28DF               	goto	i1l1879
+   903  0110                     i1l1987:	
+   904                           
+   905                           ;main.c: 286: PORTA = 0x01;
+   906  0110  3001               	movlw	1
+   907  0111  21B7               	call	PL2	;select bank 0
+   908  0112  0085               	movwf	5	;volatile
+   909  0113  28E4               	goto	i1l1889
+   910  0114                     i1l1997:	
+   911                           
+   912                           ;main.c: 293: PORTA = 0x01;
+   913  0114  3001               	movlw	1
+   914  0115  21B7               	call	PL2	;select bank 0
+   915  0116  0085               	movwf	5	;volatile
+   916  0117  28E8               	goto	i1l1899
+   917  0118                     i1l2007:	
+   918                           
+   919                           ;main.c: 300: PORTA = 0x01;
+   920  0118  3001               	movlw	1
+   921  0119  21B7               	call	PL2	;select bank 0
+   922  011A  0085               	movwf	5	;volatile
+   923  011B  28EE               	goto	i1l1909
+   924  011C                     i1l2019:	
+   925                           
+   926                           ; Switch on 2 bytes has been partitioned into a top level switch of size 1, and 1 sub-sw
+      +                          itches
+   927                           ; Switch size 1, requested type "space"
+   928                           ; Number of cases is 1, Range of values is 0 to 0
+   929                           ; switch strategies available:
+   930                           ; Name         Instructions Cycles
+   931                           ; simple_byte            4     3 (average)
+   932                           ; direct_byte           11     8 (fixed)
+   933                           ; jumptable            260     6 (fixed)
+   934                           ; rangetable             5     6 (fixed)
+   935                           ; spacedrange            8     9 (fixed)
+   936                           ; locatedrange           1     3 (fixed)
+   937                           ;	Chosen strategy is simple_byte
+   938  011C  0871               	movf	affichage@valeur+1,w
+   939  011D  3A00               	xorlw	0	; case 0
+   940  011E  1903               	skipnz
+   941  011F  2921               	goto	i1l2155
+   942  0120  2953               	goto	i1l2021
+   943  0121                     i1l2155:	
+   944                           
+   945                           ; Switch size 1, requested type "space"
+   946                           ; Number of cases is 16, Range of values is 0 to 15
+   947                           ; switch strategies available:
+   948                           ; Name         Instructions Cycles
+   949                           ; simple_byte           49    25 (average)
+   950                           ; direct_byte           56     8 (fixed)
+   951                           ; jumptable            260     6 (fixed)
+   952                           ; rangetable            20     6 (fixed)
+   953                           ; spacedrange           38     9 (fixed)
+   954                           ; locatedrange          16     3 (fixed)
+   955                           ;	Chosen strategy is simple_byte
+   956  0121  0870               	movf	affichage@valeur,w
+   957  0122  3A00               	xorlw	0	; case 0
+   958  0123  1903               	skipnz
+   959  0124  28D2               	goto	i1l1857
+   960  0125  3A01               	xorlw	1	; case 1
+   961  0126  1903               	skipnz
+   962  0127  28D9               	goto	i1l1867
+   963  0128  3A03               	xorlw	3	; case 2
+   964  0129  1903               	skipnz
+   965  012A  28DD               	goto	i1l1877
+   966  012B  3A01               	xorlw	1	; case 3
+   967  012C  1903               	skipnz
+   968  012D  28E2               	goto	i1l1887
+   969  012E  3A07               	xorlw	7	; case 4
+   970  012F  1903               	skipnz
+   971  0130  28E6               	goto	i1l1897
+   972  0131  3A01               	xorlw	1	; case 5
+   973  0132  1903               	skipnz
+   974  0133  28EC               	goto	i1l1907
+   975  0134  3A03               	xorlw	3	; case 6
+   976  0135  1903               	skipnz
+   977  0136  28F0               	goto	i1l1917
+   978  0137  3A01               	xorlw	1	; case 7
+   979  0138  1903               	skipnz
+   980  0139  28F5               	goto	i1l1927
+   981  013A  3A0F               	xorlw	15	; case 8
+   982  013B  1903               	skipnz
+   983  013C  28F9               	goto	i1l1937
+   984  013D  3A01               	xorlw	1	; case 9
+   985  013E  1903               	skipnz
+   986  013F  2900               	goto	i1l1947
+   987  0140  3A03               	xorlw	3	; case 10
+   988  0141  1903               	skipnz
+   989  0142  2904               	goto	i1l1957
+   990  0143  3A01               	xorlw	1	; case 11
+   991  0144  1903               	skipnz
+   992  0145  2908               	goto	i1l1967
+   993  0146  3A07               	xorlw	7	; case 12
+   994  0147  1903               	skipnz
+   995  0148  290C               	goto	i1l1977
+   996  0149  3A01               	xorlw	1	; case 13
+   997  014A  1903               	skipnz
+   998  014B  2910               	goto	i1l1987
+   999  014C  3A03               	xorlw	3	; case 14
+  1000  014D  1903               	skipnz
+  1001  014E  2914               	goto	i1l1997
+  1002  014F  3A01               	xorlw	1	; case 15
+  1003  0150  1903               	skipnz
+  1004  0151  2918               	goto	i1l2007
+  1005  0152  2953               	goto	i1l2021
+  1006  0153                     i1l2021:	
+  1007                           
+  1008                           ;main.c: 308: for ( int i = 0; i < 5; i++ ) {
+  1009  0153  01F2               	clrf	affichage@i
+  1010  0154  01F3               	clrf	affichage@i+1
+  1011  0155                     i1l2027:	
+  1012                           
+  1013                           ;main.c: 309: participations[i]++;
+  1014  0155  1003               	clrc
+  1015  0156  0D72               	rlf	affichage@i,w
+  1016  0157  3E20               	addlw	_participations& (0+255)
+  1017  0158  0084               	movwf	4
+  1018  0159  3001               	movlw	1
+  1019  015A  1383               	bcf	3,7	;select IRP bank0
+  1020  015B  0780               	addwf	0,f
+  1021  015C  0A84               	incf	4,f
+  1022  015D  1803               	skipnc
+  1023  015E  0A80               	incf	0,f
+  1024  015F  0AF2               	incf	affichage@i,f
+  1025  0160  1903               	skipnz
+  1026  0161  0AF3               	incf	affichage@i+1,f
+  1027  0162  0873               	movf	affichage@i+1,w
+  1028  0163  3A80               	xorlw	128
+  1029  0164  00FF               	movwf	127
+  1030  0165  3080               	movlw	128
+  1031  0166  027F               	subwf	127,w
+  1032  0167  1D03               	skipz
+  1033  0168  296B               	goto	u4_25
+  1034  0169  3005               	movlw	5
+  1035  016A  0272               	subwf	affichage@i,w
+  1036  016B                     u4_25:	
+  1037  016B  1803               	btfsc	3,0
+  1038  016C  0008               	return
+  1039  016D  2955               	goto	i1l2027
+  1040  016E                     __end_of_affichage:	
+  1041  016E                     __ptext147:	
+  1042 ;; =============== function _selectParticipant ends ============
+  1043                           
+  1044                           
+  1045 ;; *************** function _updateMinParticiations *****************
+  1046 ;; Defined at:
+  1047 ;;		line 76 in file "main.c"
+  1048 ;; Parameters:    Size  Location     Type
+  1049 ;;		None
+  1050 ;; Auto vars:     Size  Location     Type
+  1051 ;;		None
+  1052 ;; Return value:  Size  Location     Type
+  1053 ;;		None               void
+  1054 ;; Registers used:
+  1055 ;;		wreg, fsr0l, fsr0h, fsr1l, fsr1h, status,2, status,0, btemp+1, pclath, cstack
+  1056 ;; Tracked objects:
+  1057 ;;		On entry : 60/0
+  1058 ;;		On exit  : 0/0
+  1059 ;;		Unchanged: FFE00/0
+  1060 ;; Data sizes:     COMMON   BANK0   BANK1   BANK3   BANK2
+  1061 ;;      Params:         0       0       0       0       0
+  1062 ;;      Locals:         0       0       0       0       0
+  1063 ;;      Temps:          0       0       0       0       0
+  1064 ;;      Totals:         0       0       0       0       0
+  1065 ;;Total ram usage:        0 bytes
+  1066 ;; Hardware stack levels used:    1
+  1067 ;; Hardware stack levels required when called:    1
+  1068 ;; This function calls:
+  1069 ;;		_setMinParticiations
+  1070 ;; This function is called by:
+  1071 ;;		_interruption
+  1072 ;; This function uses a non-reentrant model
+  1073 ;;
+  1074  016E                     _updateMinParticiations:	
+  1075                           
+  1076                           ;main.c: 78: minParticipation = -1;
+  1077                           
+  1078                           ; Regs used in _updateMinParticiations: [allreg]
+  1079  016E  30FF               	movlw	255
+  1080  016F  00FC               	movwf	_minParticipation
+  1081  0170  00FD               	movwf	_minParticipation+1
+  1082                           
+  1083                           ;main.c: 80: if ( RC0 )
+  1084  0171  1C07               	btfss	7,0
+  1085  0172  297A               	goto	i1l2043
+  1086                           
+  1087                           ;main.c: 81: setMinParticiations( participations[0] );
+  1088  0173  0821               	movf	_participations+1,w
+  1089  0174  00F1               	movwf	?_setMinParticiations+1
+  1090  0175  0820               	movf	_participations,w
+  1091  0176  00F0               	movwf	?_setMinParticiations
+  1092  0177  21A0  120A  118A   	fcall	_setMinParticiations
+  1093  017A                     i1l2043:	
+  1094  017A  21B7               	call	PL2	;select bank 0
+  1095                           
+  1096                           ;main.c: 82: if ( RC1 )
+  1097  017B  1C87               	btfss	7,1
+  1098  017C  2984               	goto	i1l2047
+  1099                           
+  1100                           ;main.c: 83: setMinParticiations( participations[1] );
+  1101  017D  0823               	movf	_participations+3,w
+  1102  017E  00F1               	movwf	?_setMinParticiations+1
+  1103  017F  0822               	movf	_participations+2,w
+  1104  0180  00F0               	movwf	?_setMinParticiations
+  1105  0181  21A0  120A  118A   	fcall	_setMinParticiations
+  1106  0184                     i1l2047:	
+  1107  0184  21B7               	call	PL2	;select bank 0
+  1108                           
+  1109                           ;main.c: 84: if ( RC2 )
+  1110  0185  1D07               	btfss	7,2
+  1111  0186  298E               	goto	i1l2051
+  1112                           
+  1113                           ;main.c: 85: setMinParticiations( participations[2] );
+  1114  0187  0825               	movf	_participations+5,w
+  1115  0188  00F1               	movwf	?_setMinParticiations+1
+  1116  0189  0824               	movf	_participations+4,w
+  1117  018A  00F0               	movwf	?_setMinParticiations
+  1118  018B  21A0  120A  118A   	fcall	_setMinParticiations
+  1119  018E                     i1l2051:	
+  1120  018E  21B7               	call	PL2	;select bank 0
+  1121                           
+  1122                           ;main.c: 86: if ( RC3 )
+  1123  018F  1D87               	btfss	7,3
+  1124  0190  2998               	goto	i1l2055
+  1125                           
+  1126                           ;main.c: 87: setMinParticiations( participations[3] );
+  1127  0191  0827               	movf	_participations+7,w
+  1128  0192  00F1               	movwf	?_setMinParticiations+1
+  1129  0193  0826               	movf	_participations+6,w
+  1130  0194  00F0               	movwf	?_setMinParticiations
+  1131  0195  21A0  120A  118A   	fcall	_setMinParticiations
+  1132  0198                     i1l2055:	
+  1133  0198  21B7               	call	PL2	;select bank 0
+  1134                           
+  1135                           ;main.c: 88: if ( RC4 )
+  1136  0199  1E07               	btfss	7,4
+  1137  019A  0008               	return
+  1138                           
+  1139                           ;main.c: 89: setMinParticiations( participations[4] );
+  1140  019B  0829               	movf	_participations+9,w
+  1141  019C  00F1               	movwf	?_setMinParticiations+1
+  1142  019D  0828               	movf	_participations+8,w
+  1143  019E  00F0               	movwf	?_setMinParticiations
+  1144  019F  29A0               	ljmp	i1l2093
+  1145  01A0                     __end_of_updateMinParticiations:	
+  1146  01A0                     __ptext148:	
+  1147 ;; =============== function _updateMinParticiations ends ============
+  1148                           
+  1149                           
+  1150 ;; *************** function _setMinParticiations *****************
+  1151 ;; Defined at:
+  1152 ;;		line 182 in file "main.c"
+  1153 ;; Parameters:    Size  Location     Type
+  1154 ;;  value           2    0[COMMON] int 
+  1155 ;; Auto vars:     Size  Location     Type
+  1156 ;;		None
+  1157 ;; Return value:  Size  Location     Type
+  1158 ;;		None               void
+  1159 ;; Registers used:
+  1160 ;;		wreg
+  1161 ;; Tracked objects:
+  1162 ;;		On entry : 60/0
+  1163 ;;		On exit  : 0/0
+  1164 ;;		Unchanged: FFE00/0
+  1165 ;; Data sizes:     COMMON   BANK0   BANK1   BANK3   BANK2
+  1166 ;;      Params:         2       0       0       0       0
+  1167 ;;      Locals:         0       0       0       0       0
+  1168 ;;      Temps:          1       0       0       0       0
+  1169 ;;      Totals:         3       0       0       0       0
+  1170 ;;Total ram usage:        3 bytes
+  1171 ;; Hardware stack levels used:    1
+  1172 ;; This function calls:
+  1173 ;;		Nothing
+  1174 ;; This function is called by:
+  1175 ;;		_updateMinParticiations
+  1176 ;; This function uses a non-reentrant model
+  1177 ;;
+  1178  01A0                     _setMinParticiations:	
+  1179  01A0                     i1l2093:	
+  1180                           ; Regs used in _setMinParticiations: [wreg]
+  1181                           
+  1182                           
+  1183                           ;main.c: 184: if ( minParticipation == -1 )
+  1184  01A0  0A7C               	incf	_minParticipation,w
+  1185  01A1  1903               	skipnz
+  1186  01A2  0A7D               	incf	_minParticipation+1,w
+  1187  01A3  1D03               	skipz
+  1188  01A4  29AA               	goto	i1l2097
+  1189  01A5                     i1l2095:	
+  1190                           
+  1191                           ;main.c: 185: minParticipation = value;
+  1192  01A5  0871               	movf	setMinParticiations@value+1,w
+  1193  01A6  00FD               	movwf	_minParticipation+1
+  1194  01A7  0870               	movf	setMinParticiations@value,w
+  1195  01A8  00FC               	movwf	_minParticipation
+  1196  01A9  0008               	return
+  1197  01AA                     i1l2097:	
+  1198                           
+  1199                           ;main.c: 186: else if ( value < minParticipation )
+  1200  01AA  0871               	movf	setMinParticiations@value+1,w
+  1201  01AB  3A80               	xorlw	128
+  1202  01AC  00F2               	movwf	??_setMinParticiations
+  1203  01AD  087D               	movf	_minParticipation+1,w
+  1204  01AE  3A80               	xorlw	128
+  1205  01AF  0272               	subwf	??_setMinParticiations,w
+  1206  01B0  1D03               	skipz
+  1207  01B1  29B4               	goto	u22_25
+  1208  01B2  087C               	movf	_minParticipation,w
+  1209  01B3  0270               	subwf	setMinParticiations@value,w
+  1210  01B4                     u22_25:	
+  1211  01B4  1803               	skipnc
+  1212  01B5  0008               	return
+  1213  01B6  29A5               	goto	i1l2095
+  1214  01B7                     __end_of_setMinParticiations:	
+  1215  01B7                     PL2:	
+  1216  01B7  1283               	bcf	3,5	;RP0=0, select bank0
+  1217  01B8  1303               	bcf	3,6	;RP1=0, select bank0
+  1218  01B9  0008               	return
+  1219                           
+  1220                           	psect	intentry
+  1221  0004                     __pintentry:	
+  1222                           ; Regs used in _interruption: [allreg]
+  1223                           
+  1224  0004                     interrupt_function:	
+  1225  007E                     saved_w	set	btemp
+  1226  0004  00FE               	movwf	btemp
+  1227  0005  0E03               	swapf	3,w
+  1228  0006  00F4               	movwf	??_interruption
+  1229  0007  0804               	movf	4,w
+  1230  0008  00F5               	movwf	??_interruption+1
+  1231  0009  080A               	movf	10,w
+  1232  000A  00F6               	movwf	??_interruption+2
+  1233  000B  1283               	bcf	3,5	;RP0=0, select bank0
+  1234  000C  1303               	bcf	3,6	;RP1=0, select bank0
+  1235  000D  087F               	movf	btemp+1,w
+  1236  000E  00F7               	movwf	??_interruption+3
+  1237  000F  120A  118A  2815   	ljmp	_interruption
+  1238                           
+  1239                           	psect	text150
+  1240  0000                     __ptext150:	
+  1241 ;; =============== function _affichage ends ============
+  1242                           
+  1243  007E                     btemp	set	126	;btemp
+  1244  007E                     wtemp0	set	126
+
+
+HI-TECH Software PICC Macro Assembler V9.82 build 9453 
+Symbol Table                                                                                   Fri Apr 28 08:00:42 2017
+
+     __size_of_selectParticipant 0072   __end_of_updateMinParticiations 01A0                               fsr 0004  
+                            l702 01DB                              _RB1 0031                              _RC0 0038  
+                            _RB2 0032                              _RC1 0039                              _RC2 003A  
+                            _RB4 0034                              _RC3 003B                              _RB5 0035  
+                            _RC4 003C                              _RB6 0036                              _RB7 0037  
+                            fsr0 0004                              indf 0000                             l2121 0000  
+                           l2131 0000                             l2123 0000                             l2133 0000  
+                           l2125 0000                             l2127 0000                             l2129 0000  
+                           _INTE 005C                             _INTF 0059                             _TMR0 0001  
+                 _participations 0020                             u4_25 016B                             _main 01CC  
+                           btemp 007E                             start 0012                            ?_main 0070  
+                          i1l711 0053                            i1l730 00BC                            i1l722 0067  
+                          i1l707 002E                            i1l724 007D                            i1l726 0092  
+                          i1l728 00A7                            i1l762 0000                            u20_25 00C4  
+                          u12_25 0070                            u22_25 01B4                            u14_25 0085  
+                          u16_25 009A                            u18_25 00AF                            _PORTA 0005  
+                          _PORTB 0006                            _PORTC 0007                            _PORTD 0008  
+                          _TRISA 0085                            _TRISB 0086                            _TRISC 0087  
+                          _TRISD 0088                            _compt 0078                            pclath 000A  
+                          status 0003                            wtemp0 007E                     __end_of_main 01DC  
+                         ??_main 0000      __end_of_setMinParticiations 01B7                           i1l2021 0153  
+                         i1l2031 0000                           i1l2007 0118                           i1l2027 0155  
+                         i1l2019 011C                           i1l2051 018E                           i1l2043 017A  
+                         i1l2029 0000                           i1l2037 0000                           i1l2055 0198  
+                         i1l2047 0184                           i1l2039 0000                           i1l2073 0000  
+                         i1l2155 0121                           i1l2091 0000                           i1l2067 0000  
+                         i1l2059 0000                           i1l2093 01A0                           i1l2085 0000  
+                         i1l2095 01A5                           i1l2079 0000                           i1l2097 01AA  
+                         i1l1901 00E9                           i1l1903 00EA                           i1l1831 0000  
+                         i1l1823 0000                           i1l1921 00F3                           i1l1841 0000  
+                         i1l1833 0000                           i1l1907 00EC                           i1l1851 0000  
+                         i1l1843 0000                           i1l1835 0000                           i1l1827 0000  
+                         i1l1941 00FC                           i1l1917 00F0                           i1l1909 00EE  
+                         i1l1861 00D5                           i1l1853 0000                           i1l1845 0000  
+                         i1l1837 0000                           i1l1829 0000                           i1l1943 0000  
+                         i1l1927 00F5                           i1l1919 0000                           i1l1863 00D6  
+                         i1l1855 00D1                           i1l1945 0000                           i1l1937 00F9  
+                         i1l1929 0000                           i1l1881 00E0                           i1l1865 00D7  
+                         i1l1857 00D2                           i1l1849 0000                           i1l1947 0100  
+                         i1l1939 0000                           i1l1867 00D9                           i1l1859 00D4  
+                         i1l1957 0104                           i1l1949 0000                           i1l1877 00DD  
+                         i1l1869 00DB                           i1l1967 0108                           i1l1887 00E2  
+                         i1l1879 00DF                           i1l1977 010C                           i1l1897 00E6  
+                         i1l1889 00E4                           i1l1987 0110                           i1l1899 00E8  
+                         i1l1997 0114                           _INTCON 000B                           _TMR0IE 005D  
+                         _TMR0IF 005A                           clrloop 01DD                     __pdataCOMMON 007C  
+                         saved_w 007E               __size_of_affichage 009D                   __pcstackCOMMON 0070  
+                  ?_interruption 0070                       __pbssBANK0 0020                       __pmaintext 01CC  
+                 ??_interruption 0074                       __pintentry 0004                __end_of_affichage 016E  
+                     affichage@i 0072             end_of_initialization 01C8         ??_updateMinParticiations 0073  
+           __end_of_interruption 005F     __size_of_setMinParticiations 0017                    __pidataCOMMON 0000  
+            start_initialization 01BA  __size_of_updateMinParticiations 0032                      __pbssCOMMON 0078  
+                  __pcstackBANK0 0000                        _affichage 00D1                        __ptext150 0000  
+                      __ptext145 0015                        __ptext146 005F                        __ptext147 016E  
+                      __ptext148 01A0                        __ptext149 00D1            __size_of_interruption 004A  
+                      _countDown 007A           _updateMinParticiations 016E                       ?_affichage 0070  
+              interrupt_function 0004                     _interruption 0015              _setMinParticiations 01A0  
+           ?_setMinParticiations 0070                 _minParticipation 007C                _selectParticipant 005F  
+             ?_selectParticipant 0070              ??_selectParticipant 0074            ??_setMinParticiations 0072  
+                    ??_affichage 0072                    __size_of_main 0010                  affichage@valeur 0070  
+                       clear_ram 01DC        __end_of_selectParticipant 00D1                         intlevel1 0000  
+       setMinParticiations@value 0070          ?_updateMinParticiations 0070                       _OPTION_REG 0081  
